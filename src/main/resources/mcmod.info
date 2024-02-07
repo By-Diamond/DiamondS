@@ -1,0 +1,16 @@
+[
+{
+  "modid": "diamonds",
+  "name": "DiamondS",
+  "description": "Its NOT a mod for Hypixel Skyblock players",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/By-Diamond/DiamondS",
+  "updateUrl": "https://github.com/By-Diamond/DiamondS",
+  "authorList": ["By Diamond"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
