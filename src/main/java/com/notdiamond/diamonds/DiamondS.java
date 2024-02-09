@@ -6,6 +6,7 @@ import com.notdiamond.diamonds.core.DiamondSFunction;
 import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.functions.ADClear;
 import com.notdiamond.diamonds.functions.CarryHelper;
+import com.notdiamond.diamonds.functions.HidePlayers;
 import com.notdiamond.diamonds.functions.PartyHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
@@ -15,9 +16,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import com.notdiamond.diamonds.commands.menu;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 import java.util.ArrayList;
 
@@ -31,7 +30,7 @@ import java.util.ArrayList;
 public class DiamondS
 {
     public static final String MODID = "diamonds";
-    public static final String VERSION = "Build 240207";
+    public static final String VERSION = "1.1.0";
     public static final String MODNAME = "DiamondS";
     public static ArrayList<String> TradeList = new ArrayList();
     public static ArrayList<DiamondSFunction> FunctionList = new ArrayList();
@@ -42,10 +41,12 @@ public class DiamondS
         MinecraftForge.EVENT_BUS.register(new CarryHelper());
         MinecraftForge.EVENT_BUS.register(new ADClear());
         MinecraftForge.EVENT_BUS.register(new PartyHelper());
+        MinecraftForge.EVENT_BUS.register(new HidePlayers());
 
-        Functions.RegisterFunction("PartyHelper",false);
-        Functions.RegisterFunction("ADClear",false);
-        Functions.RegisterFunction("CarryHelper",true);
+        Functions.RegisterFunction("PartyHelper",true);
+        Functions.RegisterFunction("ADClear",true);
+        Functions.RegisterFunction("CarryHelper",false);
+        Functions.RegisterFunction("HidePlayers",false);
 
         ClientCommandHandler.instance.registerCommand(new menu());
         ClientCommandHandler.instance.registerCommand(new FunctionSwitch());

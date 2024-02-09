@@ -12,51 +12,67 @@ public class ADClear {
             String msg = event.message.getUnformattedText();
             String player = "";
             IChatComponent ALL = null;
-            if(msg.contains("You earned") && msg.contains("from playing SkyBlock!") == true) {
+            if(msg.startsWith("公会 > ") || msg.startsWith("组队 > ") || msg.startsWith("Guild > ") || msg.startsWith("Party > ") || msg.startsWith("Co-op > ")==true || msg.startsWith("Co-op > ")==true){
+                return;
+            }
+            if(msg.contains("free") && msg.contains("coin")) {
                 event.setCanceled(true);
                 return;
             }
-            if(msg.toLowerCase().contains("lowball") == true) {
+            if(msg.contains("You earned") && msg.contains("from playing SkyBlock!")) {
                 event.setCanceled(true);
                 return;
             }
-
-            if(msg.toLowerCase().contains("/ah") == true) {
-                event.setCanceled(true);
-                return;
-            }
-
-            if(msg.toLowerCase().contains("visit") == true) {
-                event.setCanceled(true);
-                return;
-            }
-
-            if(msg.toLowerCase().contains("donate") == true) {
+            if(msg.toLowerCase().contains("lowball")) {
                 event.setCanceled(true);
                 return;
             }
 
-            if(msg.toLowerCase().contains("buy") == true) {
+            if(msg.toLowerCase().contains("/ah") || msg.toLowerCase().contains("my ah")) {
                 event.setCanceled(true);
                 return;
             }
 
-            if(msg.toLowerCase().contains("sell") == true) {
+            if(msg.toLowerCase().contains("discord")) {
+                event.setCanceled(true);
+                return;
+            }
+            if(msg.toLowerCase().contains("guild") && msg.toLowerCase().contains("join")) {
                 event.setCanceled(true);
                 return;
             }
 
-            if(msg.toLowerCase().contains("joined the lobby!") == true) {
+            if(msg.toLowerCase().contains("visit")) {
                 event.setCanceled(true);
                 return;
             }
 
-            if(msg.contains("REWARD!") == true && msg.contains("in their Bedrock Chest!") == true) {
+            if(msg.toLowerCase().contains("donate")) {
                 event.setCanceled(true);
                 return;
             }
 
-            if(msg.contains("the Hype Diamond") == true) {
+            if(msg.toLowerCase().contains("buy")) {
+                event.setCanceled(true);
+                return;
+            }
+
+            if(msg.toLowerCase().contains("sell")) {
+                event.setCanceled(true);
+                return;
+            }
+
+            if(msg.toLowerCase().contains("joined the lobby!") || msg.toLowerCase().contains("进入了大厅！")) {
+                event.setCanceled(true);
+                return;
+            }
+
+            if(msg.contains("REWARD!") && msg.contains("in their Bedrock Chest!")) {
+                event.setCanceled(true);
+                return;
+            }
+
+            if(msg.contains("the Hype Diamond") || msg.contains("人气钻石已达上限")) {
                 event.setCanceled(true);
                 return;
             }
