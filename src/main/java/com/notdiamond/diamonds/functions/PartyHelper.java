@@ -21,6 +21,10 @@ public class PartyHelper {
             String player = "";
             IChatComponent ALL = null;
 
+            if(msg.startsWith("公会 > ") || msg.startsWith("组队 > ") || msg.startsWith("Guild > ") || msg.startsWith("Party > ") || msg.startsWith("Co-op > ")==true || msg.startsWith("Co-op > ")==true){
+                return;
+            }
+
             IChatComponent Kick = new ChatComponentText(" [Kick]");
             ChatStyle Kick_Style = new ChatStyle();
             Kick_Style.setColor(EnumChatFormatting.RED);
@@ -51,10 +55,13 @@ public class PartyHelper {
             PV_Style.setBold(true);
             PV_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("查看玩家档案(需要安装 NEU Mod)")));
 
-
             if(msg.contains("Party Finder > ") == true && msg.contains(" joined the dungeon group!") == true){
                 player = text.getSubString(msg,"Party Finder > "," joined the dungeon group!");
                 player.replace(" ","");
+
+                if(player.contentEquals(Minecraft.getMinecraft().thePlayer.getName()) || player.toLowerCase().contentEquals("you")){
+                    return;
+                }
 
                 ALL = event.message.createCopy();
 
@@ -81,6 +88,35 @@ public class PartyHelper {
                 }
                 player.replace(" ","");
 
+                if(player.contentEquals(Minecraft.getMinecraft().thePlayer.getName())){
+                    return;
+                }
+
+                ALL = event.message.createCopy();
+
+                Invite_Style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/p " + player));
+                Ignore_Style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/ignore add " + player));
+                Invite.setChatStyle(Invite_Style);
+                Ignore.setChatStyle(Ignore_Style);
+
+                ALL.appendSibling(Invite);
+                ALL.appendSibling(Ignore);
+                event.setCanceled(true);
+                Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                return;
+            }
+            if(msg.contains("离开了组队。") == true){
+                if (msg.contains("] ") == true){
+                    player = text.getSubString(msg,"] ","离开了组队。");
+                }else{
+                    player = text.getSubString(msg,"","离开了组队。");
+                }
+                player.replace(" ","");
+
+                if(player.contentEquals(Minecraft.getMinecraft().thePlayer.getName()) || player.contentEquals("你")){
+                    return;
+                }
+
                 ALL = event.message.createCopy();
 
                 Invite_Style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/p " + player));
@@ -97,6 +133,22 @@ public class PartyHelper {
 
             if(msg.contains("Added ") && msg.contains(" to your ignore list.") == true){
                 player = text.getSubString(msg,"Added "," to your ignore list.");
+                player.replace(" ","");
+
+                ALL = event.message.createCopy();
+
+                RmIgnore_Style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/ignore remove " + player));
+                RmIgnore.setChatStyle(RmIgnore_Style);
+
+                ALL.appendSibling(RmIgnore);
+                event.setCanceled(true);
+                Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+
+                return;
+            }
+
+            if(msg.startsWith("已将") && msg.endsWith("添加至屏蔽列表。") == true){
+                player = text.getSubString(msg,"已将","添加至屏蔽列表。");
                 player.replace(" ","");
 
                 ALL = event.message.createCopy();
