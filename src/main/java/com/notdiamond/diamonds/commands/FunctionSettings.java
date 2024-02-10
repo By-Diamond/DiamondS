@@ -46,11 +46,22 @@ public class FunctionSettings extends CommandBase {
         if(theFunction.contentEquals("carryhelper")){
             if(theSetting.contentEquals("clear")){
                 DiamondS.TradeList.clear();
-                DiamondS.SendMessage("§a清除Trade List成功");
+                DiamondS.SendMessage("§a清除§lTrade List§r§a成功");
                 return;
             }
 
             Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bclear - 清空Trade List")));
+            Message.setChatStyle(Message_Style);
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
+            return;
+        }
+        if(theFunction.contentEquals("wardrobehelper")){
+            if(theSetting.contentEquals("clear")){
+                DiamondS.tempint =0;
+                DiamondS.SendMessage("§a重置 §lWardrobeHelper §r§a功能进程成功");
+                return;
+            }
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bclear - 重置功能进程")));
             Message.setChatStyle(Message_Style);
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;

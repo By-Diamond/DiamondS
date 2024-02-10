@@ -12,6 +12,7 @@
 - CarryHelper
 - PartyHelper
 - HidePlayers
+- WardrobeHelper
 
 # Commands
 - /menu 打开菜单
