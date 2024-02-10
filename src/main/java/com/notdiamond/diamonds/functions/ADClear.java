@@ -2,6 +2,7 @@ package com.notdiamond.diamonds.functions;
 
 import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Functions;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -13,10 +14,10 @@ public class ADClear {
             String msg = event.message.getUnformattedText();
             String player = "";
             IChatComponent ALL = null;
-            if(msg.startsWith("[NPC]") || msg.startsWith("[Bazaar]") || msg.startsWith("公会 > ") || msg.startsWith("组队 > ") || msg.startsWith("Guild > ") || msg.startsWith("Party > ") || msg.startsWith("Co-op > ")==true || msg.startsWith("Co-op > ")==true){
+            if(msg.startsWith("§e[NPC]") || msg.startsWith("[Bazaar]") || msg.startsWith("§2公会") || msg.startsWith("§9组队") || msg.startsWith("§2Guild") || msg.startsWith("§9Party") || msg.startsWith("§bCo-op") || msg.contains(Minecraft.getMinecraft().thePlayer.getName())){
                 return;
             }
-            if(DiamondS.IsOnSkyBlock() && msg.startsWith("[")){
+            if(DiamondS.IsOnSkyBlock() && msg.startsWith("§8[§")){
                 msg = msg.toLowerCase();
                 if(msg.contains("free")) {
                     if(msg.contains("carry") || msg.contains("coin") || msg.contains("money")){
@@ -51,7 +52,7 @@ public class ADClear {
                     return;
                 }
 
-                if(msg.contains("visit") || msg.contains("donate") || msg.contains("buy") || msg.contains("sell") || msg.contains("discord") || msg.contains("lowbal")) {
+                if(msg.contains("visit") || msg.contains("donate") || msg.contains("buy") || msg.contains("sell") || msg.contains("discord") || msg.contains("lowbal") || msg.contains("bid")) {
                     event.setCanceled(true);
                     return;
                 }

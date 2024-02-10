@@ -2,7 +2,7 @@ package com.notdiamond.diamonds.functions;
 
 import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Functions;
-import com.notdiamond.diamonds.utils.text;
+import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
@@ -20,34 +20,34 @@ public class CarryHelper {
             String player = "";
             IChatComponent ALL = null;
 
-            if(msg.contains("entered The Catacombs, Floor ") || msg.contains(" entered MM Catacombs, Floor ") == true || msg.contains("!/clear") == true) {
+            if(msg.contains("entered The Catacombs, Floor ") || msg.contains(" entered MM Catacombs, Floor ")) {
                 DiamondS.TradeList.clear();
                 DiamondS.SendMessage("§a§l你已进入游戏，已清空Trade List");
                 return;
             }
 
-            if(msg.contains("Trade completed with ") && msg.contains("!") == true) {
-                if (msg.contains("] ") == true) {
-                    player = text.getSubString(msg, "] ", "!");
+            if(msg.contains("Trade completed with ") && msg.contains("!")) {
+                if (msg.contains("] ")) {
+                    player = DText.getSubString(msg, "] ", "!");
                 } else {
-                    player = text.getSubString(msg, "Trade completed with ", "!");
+                    player = DText.getSubString(msg, "Trade completed with ", "!");
                 }
                 player.replace(" ", "");
 
                 boolean AlreadyTrade = false;
                 String ALLTraded = "";
                 for (int i=0;i <= DiamondS.TradeList.size() - 1;i++){
-                    if(DiamondS.TradeList.get(i).contains(player) == true){
+                    if(DiamondS.TradeList.get(i).contains(player)){
                         AlreadyTrade = true;
                     }
                     if(i <= 0){
                         ALLTraded = DiamondS.TradeList.get(i);
                     } else {
-                        ALLTraded = ALLTraded + "\n§a"+DiamondS.TradeList.get(i);
+                        ALLTraded += "\n§a"+DiamondS.TradeList.get(i);
                     }
                 }
 
-                if(AlreadyTrade == false){
+                if(!AlreadyTrade){
                     if(DiamondS.TradeList.size() <= 0){
                         DiamondS.TradeList.add(player);
                         ALLTraded = "§a"+ player;

@@ -1,8 +1,7 @@
 package com.notdiamond.diamonds.functions;
 
-import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Functions;
-import com.notdiamond.diamonds.utils.text;
+import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
@@ -21,7 +20,7 @@ public class PartyHelper {
             String player = "";
             IChatComponent ALL = null;
 
-            if(msg.startsWith("公会 > ") || msg.startsWith("组队 > ") || msg.startsWith("Guild > ") || msg.startsWith("Party > ") || msg.startsWith("Co-op > ")==true || msg.startsWith("Co-op > ")==true){
+            if(msg.startsWith("§e[NPC]") || msg.startsWith("[Bazaar]") || msg.startsWith("§2公会") || msg.startsWith("§9组队") || msg.startsWith("§2Guild") || msg.startsWith("§9Party") || msg.startsWith("§bCo-op") || msg.contains(Minecraft.getMinecraft().thePlayer.getName())){
                 return;
             }
 
@@ -55,8 +54,8 @@ public class PartyHelper {
             PV_Style.setBold(true);
             PV_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("查看玩家档案(需要安装 NEU Mod)")));
 
-            if(msg.contains("Party Finder > ") == true && msg.contains(" joined the dungeon group!") == true){
-                player = text.getSubString(msg,"Party Finder > "," joined the dungeon group!");
+            if(msg.contains("Party Finder > ") && msg.contains(" joined the dungeon group!")){
+                player = DText.getSubString(msg,"Party Finder > "," joined the dungeon group!");
                 player.replace(" ","");
 
                 if(player.contentEquals(Minecraft.getMinecraft().thePlayer.getName()) || player.toLowerCase().contentEquals("you")){
@@ -80,11 +79,11 @@ public class PartyHelper {
                 return;
             }
 
-            if(msg.contains("has left the party.") == true){
-                if (msg.contains("] ") == true){
-                    player = text.getSubString(msg,"] ","has left the party.");
+            if(msg.contains("has left the party.")){
+                if (msg.contains("] ")){
+                    player = DText.getSubString(msg,"] ","has left the party.");
                 }else{
-                    player = text.getSubString(msg,"","has left the party.");
+                    player = DText.getSubString(msg,"","has left the party.");
                 }
                 player.replace(" ","");
 
@@ -105,11 +104,11 @@ public class PartyHelper {
                 Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
                 return;
             }
-            if(msg.contains("离开了组队。") == true){
+            if(msg.contains("离开了组队。")){
                 if (msg.contains("] ") == true){
-                    player = text.getSubString(msg,"] ","离开了组队。");
+                    player = DText.getSubString(msg,"] ","离开了组队。");
                 }else{
-                    player = text.getSubString(msg,"","离开了组队。");
+                    player = DText.getSubString(msg,"","离开了组队。");
                 }
                 player.replace(" ","");
 
@@ -131,8 +130,8 @@ public class PartyHelper {
                 return;
             }
 
-            if(msg.contains("Added ") && msg.contains(" to your ignore list.") == true){
-                player = text.getSubString(msg,"Added "," to your ignore list.");
+            if(msg.contains("Added ") && msg.contains(" to your ignore list.")){
+                player = DText.getSubString(msg,"Added "," to your ignore list.");
                 player.replace(" ","");
 
                 ALL = event.message.createCopy();
@@ -147,8 +146,8 @@ public class PartyHelper {
                 return;
             }
 
-            if(msg.startsWith("已将") && msg.endsWith("添加至屏蔽列表。") == true){
-                player = text.getSubString(msg,"已将","添加至屏蔽列表。");
+            if(msg.startsWith("已将") && msg.endsWith("添加至屏蔽列表。")){
+                player = DText.getSubString(msg,"已将","添加至屏蔽列表。");
                 player.replace(" ","");
 
                 ALL = event.message.createCopy();

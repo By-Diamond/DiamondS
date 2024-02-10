@@ -2,6 +2,8 @@ package com.notdiamond.diamonds.commands;
 
 import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.functions.Debug;
+import com.notdiamond.diamonds.functions.WardrobeHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -11,6 +13,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraftforge.common.MinecraftForge;
 
 public class FunctionSettings extends CommandBase {
     @Override
@@ -66,6 +69,23 @@ public class FunctionSettings extends CommandBase {
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;
         }
+        if(theFunction.contentEquals("debug")){
+            if(theSetting.contentEquals("msgcopy")){
+                Functions.RegisterFunction("Debug.MsgCopy",true);
+                MinecraftForge.EVENT_BUS.register(new Debug());
+                DiamondS.SendMessage("§a打开 §lDebug.MsgCopy §r§a功能成功");
+                if(Functions.GetStatus("ADClear")){
+                    Functions.SetStatus("ADClear",false);
+                    DiamondS.SendMessage("§c检测到打开§lDebug.MsgCopy§r§c，已自动关闭 §lADClear");
+                }
+                return;
+            }
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bMsgCopy - 自动复制玩家信息(带格式)")));
+            Message.setChatStyle(Message_Style);
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
+            return;
+        }
+
         //
         DiamondS.SendMessage("§c该功能无自定义设置 或 功能不存在");
         return;

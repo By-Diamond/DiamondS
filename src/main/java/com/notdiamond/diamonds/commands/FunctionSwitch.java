@@ -2,7 +2,6 @@ package com.notdiamond.diamonds.commands;
 
 import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Functions;
-import com.notdiamond.diamonds.utils.text;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -40,6 +39,10 @@ public class FunctionSwitch extends CommandBase {
         }
         //附加↓
         if(theFunction.contentEquals("carryhelper")){DiamondS.TradeList.clear();}
+        if(theFunction.contentEquals("adclear") && Functions.GetStatus("Debug.MsgCopy")){
+            Functions.SetStatus("ADClear",false);
+            DiamondS.SendMessage("§c检测到打开§lDebug.MsgCopy§r§c，已自动关闭 §lADClear");
+        }
         //附加↑
         return;
     }

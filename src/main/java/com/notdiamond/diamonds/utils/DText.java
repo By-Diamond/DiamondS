@@ -1,6 +1,6 @@
 package com.notdiamond.diamonds.utils;
 
-public class text
+public class DText
 {
     public static String getSubString(String text, String left, String right) {
         String result = "";
