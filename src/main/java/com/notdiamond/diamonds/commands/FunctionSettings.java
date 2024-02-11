@@ -39,8 +39,8 @@ public class FunctionSettings extends CommandBase {
             DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...");
             return;
         }
-        String theFunction = args[0].toLowerCase();
-        String theSetting = args[1].toLowerCase();
+        String theFunction = args[0].toLowerCase().replaceAll(" ", "");
+        String theSetting = args[1].toLowerCase().replaceAll(" ", "");
         IChatComponent Message = new ChatComponentText("[查看可选设置项]");
         ChatStyle Message_Style = new ChatStyle();
         Message_Style.setColor(EnumChatFormatting.GREEN);
@@ -80,7 +80,7 @@ public class FunctionSettings extends CommandBase {
                 }
                 return;
             }
-            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bMsgCopy - 自动复制玩家信息(带格式)")));
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bMsgCopy - 自动复制玩家消息")));
             Message.setChatStyle(Message_Style);
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;

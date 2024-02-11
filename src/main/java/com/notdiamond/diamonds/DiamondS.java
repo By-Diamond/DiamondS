@@ -7,16 +7,18 @@ import com.notdiamond.diamonds.commands.WardrobeHelperCommand;
 import com.notdiamond.diamonds.core.DiamondSFunction;
 import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.functions.*;
+import com.notdiamond.diamonds.utils.DSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import com.notdiamond.diamonds.commands.menu;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 @Mod(
@@ -31,6 +33,7 @@ public class DiamondS
     public static final String MODID = "diamonds";
     public static final String VERSION = "1.2.0";
     public static final String MODNAME = "DiamondS";
+    public static String PLAYERNAME = "";
     public static ArrayList<String> TradeList = new ArrayList();
     public static ArrayList<DiamondSFunction> FunctionList = new ArrayList();
     public static int tempint;
@@ -38,9 +41,7 @@ public class DiamondS
     public void init(FMLInitializationEvent event)
     {
         System.out.println("DiamondS >> Mod 已开始加载");
-        MinecraftForge.EVENT_BUS.register(new CarryHelper());
-        MinecraftForge.EVENT_BUS.register(new ADClear());
-        MinecraftForge.EVENT_BUS.register(new PartyHelper());
+        MinecraftForge.EVENT_BUS.register(new ChatClass());
         MinecraftForge.EVENT_BUS.register(new HidePlayers());
         MinecraftForge.EVENT_BUS.register(new WardrobeHelper());
 
@@ -49,6 +50,7 @@ public class DiamondS
         Functions.RegisterFunction("CarryHelper",false);
         Functions.RegisterFunction("HidePlayers",false);
         Functions.RegisterFunction("WardrobeHelper",true);
+        Functions.RegisterFunction("IgnoreShow",true);
 
         ClientCommandHandler.instance.registerCommand(new menu());
         ClientCommandHandler.instance.registerCommand(new FunctionSwitch());
@@ -59,6 +61,8 @@ public class DiamondS
         //注册功能 Functions.RegisterFunction("PartyHelper",false);
         //注册事件 MinecraftForge.EVENT_BUS.register(new PartyHelper());
         //注册功能设置 com.notdiamond.diamonds.commands.FunctionSettings
+
+
     }
 
     public static void SendMessage(String Message){

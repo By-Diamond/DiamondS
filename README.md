@@ -13,6 +13,7 @@
 - PartyHelper
 - HidePlayers
 - WardrobeHelper
+- IgnoreShow
 
 # Commands
 - /menu 打开菜单
