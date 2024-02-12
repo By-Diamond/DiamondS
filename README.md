@@ -14,6 +14,8 @@
 - HidePlayers
 - WardrobeHelper
 - IgnoreShow
+- Sprint
+- Sneak
 
 # Commands
 - /menu 打开菜单

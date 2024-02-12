@@ -1,35 +1,37 @@
 package com.notdiamond.diamonds.core;
 
 import com.notdiamond.diamonds.DiamondS;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 
 public class Functions {
+    public static ArrayList<DiamondSFunction> FunctionList = new ArrayList();
     public static void RegisterFunction(String FunctionName,boolean Status){
         DiamondSFunction New = new DiamondSFunction(FunctionName);
         New.SetStatus(Status);
-        DiamondS.FunctionList.add(New);
+        Functions.FunctionList.add(New);
     }
 
     public static boolean GetStatus(String FunctionName){
-        for(int i = 0;i<=DiamondS.FunctionList.size()-1;i++){
-            if(DiamondS.FunctionList.get(i).Name.toLowerCase().contentEquals(FunctionName.toLowerCase())){
-                return DiamondS.FunctionList.get(i).Status;
+        for(int i = 0;i<=Functions.FunctionList.size()-1;i++){
+            if(Functions.FunctionList.get(i).Name.toLowerCase().contentEquals(FunctionName.toLowerCase())){
+                return Functions.FunctionList.get(i).Status;
             }
         }
         return false;
     }
     public static boolean SetStatus(String FunctionName,boolean NewStatus){
 
-        for(int i = 0;i<=DiamondS.FunctionList.size()-1;i++){
-            if(DiamondS.FunctionList.get(i).Name.toLowerCase().contentEquals(FunctionName.toLowerCase())){
-                DiamondS.FunctionList.get(i).SetStatus(NewStatus);
-                if(NewStatus == true){
-                    DiamondS.SendMessage("§a§l" + DiamondS.FunctionList.get(i).Name + " §r§a已开启");
-                }else{
-                    DiamondS.SendMessage("§c§l" + DiamondS.FunctionList.get(i).Name + " §r§c已关闭");
+        for(int i = 0;i<=Functions.FunctionList.size()-1;i++){
+            if(Functions.FunctionList.get(i).Name.toLowerCase().contentEquals(FunctionName.toLowerCase())){
+                Functions.FunctionList.get(i).SetStatus(NewStatus);
+                if(Minecraft.getMinecraft().thePlayer != null){
+                    if(NewStatus == true){
+                        DiamondS.SendMessage("§a§l" + Functions.FunctionList.get(i).Name + " §r§a已开启");
+                    }else{
+                        DiamondS.SendMessage("§c§l" + Functions.FunctionList.get(i).Name + " §r§c已关闭");
+                    }
                 }
                 return true;
             }

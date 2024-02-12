@@ -4,10 +4,9 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import com.notdiamond.diamonds.commands.FunctionSettings;
 import com.notdiamond.diamonds.commands.FunctionSwitch;
 import com.notdiamond.diamonds.commands.WardrobeHelperCommand;
-import com.notdiamond.diamonds.core.DiamondSFunction;
+import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.functions.*;
-import com.notdiamond.diamonds.utils.DSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -16,9 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import com.notdiamond.diamonds.commands.menu;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 @Mod(
@@ -35,7 +32,6 @@ public class DiamondS
     public static final String MODNAME = "DiamondS";
     public static String PLAYERNAME = "";
     public static ArrayList<String> TradeList = new ArrayList();
-    public static ArrayList<DiamondSFunction> FunctionList = new ArrayList();
     public static int tempint;
     @EventHandler
     public void init(FMLInitializationEvent event)
@@ -44,6 +40,7 @@ public class DiamondS
         MinecraftForge.EVENT_BUS.register(new ChatClass());
         MinecraftForge.EVENT_BUS.register(new HidePlayers());
         MinecraftForge.EVENT_BUS.register(new WardrobeHelper());
+        MinecraftForge.EVENT_BUS.register(new MovementClass());
 
         Functions.RegisterFunction("PartyHelper",true);
         Functions.RegisterFunction("ADClear",true);
@@ -51,22 +48,27 @@ public class DiamondS
         Functions.RegisterFunction("HidePlayers",false);
         Functions.RegisterFunction("WardrobeHelper",true);
         Functions.RegisterFunction("IgnoreShow",true);
+        Functions.RegisterFunction("Sprint",true);
+        Functions.RegisterFunction("Sneak",false);
 
         ClientCommandHandler.instance.registerCommand(new menu());
         ClientCommandHandler.instance.registerCommand(new FunctionSwitch());
         ClientCommandHandler.instance.registerCommand(new FunctionSettings());
         ClientCommandHandler.instance.registerCommand(new WardrobeHelperCommand());
 
+        Config.SetConfig(Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/config/DiamondSFunctions.cfg");
+
+        Config.LoadConfig();
         //添加功能的步骤：
         //注册功能 Functions.RegisterFunction("PartyHelper",false);
         //注册事件 MinecraftForge.EVENT_BUS.register(new PartyHelper());
         //注册功能设置 com.notdiamond.diamonds.commands.FunctionSettings
-
-
     }
 
     public static void SendMessage(String Message){
-        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS >§r " + Message));
+        if(Minecraft.getMinecraft().thePlayer != null){
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS >§r " + Message));
+        }
     }
 
     public static boolean IsOnSkyBlock() {

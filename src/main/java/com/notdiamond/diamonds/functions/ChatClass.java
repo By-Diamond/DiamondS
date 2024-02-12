@@ -28,11 +28,11 @@ public class ChatClass {
             }
         }
         if(msg.contains("❤") && msg.contains("✎")){return;}
-        if(msg.toLowerCase().contains(DiamondS.PLAYERNAME.toLowerCase())){return;}
         if(msg.startsWith("[SkyBlock]") || msg.startsWith("[NPC]") || msg.startsWith("[Bazaar]") || msg.startsWith("公会") || msg.startsWith("组队") || msg.startsWith("Guild") || msg.startsWith("Co-op")){return;}
         if(msg.startsWith("Party") && !(msg.startsWith("Party Finder > "))){return;}
 
         if(Functions.GetStatus("ADClear")){
+            if(msg.toLowerCase().contains(DiamondS.PLAYERNAME.toLowerCase())){return;}
             if(DiamondS.IsOnSkyBlock() && msg.startsWith("[")){
                 msg = msg.toLowerCase();
                 if(msg.contains("free")) {
@@ -119,6 +119,7 @@ public class ChatClass {
             }
         }
         if(Functions.GetStatus("PartyHelper")){
+            if(msg.toLowerCase().contains(DiamondS.PLAYERNAME.toLowerCase())){return;}
             if((msg.startsWith("Party Finder > "))
                     || msg.endsWith("has left the party.")
                     || msg.endsWith("离开了组队。")
@@ -276,6 +277,7 @@ public class ChatClass {
             }
         }
         if(Functions.GetStatus("IgnoreShow")){
+            if(msg.toLowerCase().contains(DiamondS.PLAYERNAME.toLowerCase())){return;}
             String tempmsg = event.message.getUnformattedText();
             if(tempmsg.contains(" is holding §8[") || tempmsg.contains(" is friends with a §8[") || tempmsg.contains(" is wearing §8[")){
                 event.setCanceled(true);

@@ -1,7 +1,10 @@
 package com.notdiamond.diamonds.commands;
 
 import com.notdiamond.diamonds.DiamondS;
+import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -24,9 +27,8 @@ public class FunctionSwitch extends CommandBase {
         return 0;
     }
 
-
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+    public void processCommand(ICommandSender sender, String[] args){
         if(args.length <= 0){
             DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fc <功能名称>");
             return;
@@ -43,7 +45,14 @@ public class FunctionSwitch extends CommandBase {
             Functions.SetStatus("ADClear",false);
             DiamondS.SendMessage("§c检测到打开§lDebug.MsgCopy§r§c，已自动关闭 §lADClear");
         }
+        if(theFunction.contentEquals("sneak")){
+            if(Minecraft.getMinecraft().thePlayer != null){
+                KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(),false);
+            }
+        }
+
         //附加↑
+        Config.saveConfig();
         return;
     }
 }
