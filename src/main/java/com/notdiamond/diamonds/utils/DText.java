@@ -1,11 +1,11 @@
 package com.notdiamond.diamonds.utils;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DText
-{
+public class DText {
     public static String getSubString(String text, String left, String right) {
-        String result = "";
+        String result;
         int zLen;
         if (left == null || left.isEmpty()) {
             zLen = 0;
@@ -18,14 +18,38 @@ public class DText
             }
         }
         int yLen = text.indexOf(right, zLen);
-        if (yLen < 0 || right == null || right.isEmpty()) {
+        if (yLen < 0 || right.isEmpty()) {
             yLen = text.length();
         }
         result = text.substring(zLen, yLen);
         return result;
     }
-
-    public static String RemoveColor(String text){
+    public static String AddColor(String text) {
+        text = text.replaceAll("&1", "§1");
+        text = text.replaceAll("&2", "§2");
+        text = text.replaceAll("&3", "§3");
+        text = text.replaceAll("&4", "§4");
+        text = text.replaceAll("&5", "§5");
+        text = text.replaceAll("&6", "§6");
+        text = text.replaceAll("&7", "§7");
+        text = text.replaceAll("&8", "§8");
+        text = text.replaceAll("&9", "§9");
+        text = text.replaceAll("&0", "§0");
+        text = text.replaceAll("&a", "§a");
+        text = text.replaceAll("&b", "§b");
+        text = text.replaceAll("&c", "§c");
+        text = text.replaceAll("&d", "§d");
+        text = text.replaceAll("&e", "§e");
+        text = text.replaceAll("&f", "§f");
+        text = text.replaceAll("&r", "§r");
+        text = text.replaceAll("&n", "§n");
+        text = text.replaceAll("&m", "§m");
+        text = text.replaceAll("&o", "§o");
+        text = text.replaceAll("&r", "§r");
+        text = text.replaceAll("&k", "§k");
+        return text;
+    }
+    public static String RemoveColor(String text) {
         text = text.replaceAll("§1", "");
         text = text.replaceAll("§2", "");
         text = text.replaceAll("§3", "");
@@ -49,5 +73,15 @@ public class DText
         text = text.replaceAll("§r", "");
         text = text.replaceAll("§k", "");
         return text;
+    }
+
+    /*
+        替换多个文字时，可以使用"|"连接
+        例如：Hello|World，将会同时替换Hello和World为Replacement
+     */
+    public static String Replace(String Msg, String Content, String Replacement) {
+        Pattern pattern = Pattern.compile("(?i)(" + Content + ")", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(Msg);
+        return matcher.replaceAll(Replacement);
     }
 }

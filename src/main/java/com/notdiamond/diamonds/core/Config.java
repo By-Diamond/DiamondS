@@ -1,6 +1,8 @@
 package com.notdiamond.diamonds.core;
 
 
+import com.notdiamond.diamonds.functions.ChatClass;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,13 +31,21 @@ public class Config
                 for(int i = 0;i<=Functions.FunctionList.size()-1;i++){
                     if(Functions.FunctionList.get(i).Name.contentEquals("HidePlayers")){
                         Functions.SetStatus("HidePlayers",false);
-                    }else{
+                    } else if (Functions.FunctionList.get(i).Name.contentEquals("HideArmor")) {
+                        Functions.SetStatus("HideArmor",false);
+                    } else{
                         String Status = Config.prop.getProperty("Functions."+Functions.FunctionList.get(i).Name);
                         if(Status != null && !(Status.contentEquals(""))){
                             Functions.SetStatus(Functions.FunctionList.get(i).Name,Boolean.parseBoolean(Status));
                         }
                     }
                 }
+                HUD.X = Integer.parseInt(Config.prop.getProperty("HUD.X", "5"));
+                HUD.Y = Integer.parseInt(Config.prop.getProperty("HUD.Y", "10"));
+                ChatClass.CarryHelper_IsAutoWarp = Boolean.parseBoolean(Config.prop.getProperty("CarryHelper.AutoWarp", "false"));
+                ChatClass.CarryHelper_IsAutoMessage = Boolean.parseBoolean(Config.prop.getProperty("CarryHelper.AutoMessage", "false"));
+                ChatClass.CarryHelper_AutoMessage = Config.prop.getProperty("CarryHelper.Msg", "Pay at sand");
+                ChatClass.NickName_Name = Config.prop.getProperty("NickName.Name", "§b[You]");
             }
     }
 
@@ -44,6 +54,13 @@ public class Config
                 for(int i = 0;i<=Functions.FunctionList.size()-1;i++){
                     Config.prop.setProperty("Functions."+Functions.FunctionList.get(i).Name, String.valueOf(Functions.GetStatus(Functions.FunctionList.get(i).Name)));
                 }
+                Config.prop.setProperty("HUD.X", String.valueOf(HUD.X));
+                Config.prop.setProperty("HUD.Y", String.valueOf(HUD.Y));
+                Config.prop.setProperty("CarryHelper.AutoWarp", String.valueOf(ChatClass.CarryHelper_IsAutoWarp));
+                Config.prop.setProperty("CarryHelper.AutoMessage", String.valueOf(ChatClass.CarryHelper_IsAutoMessage));
+                Config.prop.setProperty("CarryHelper.Msg", ChatClass.CarryHelper_AutoMessage);
+                Config.prop.setProperty("NickName.Name", ChatClass.NickName_Name);
+
                 FileOutputStream fos = new FileOutputStream(Config.fileName);
                 Config.prop.store(fos, null);
             } catch (IOException e) {

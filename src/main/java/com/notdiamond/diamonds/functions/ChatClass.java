@@ -15,12 +15,17 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ChatClass {
 
+    public static boolean CarryHelper_IsAutoWarp = false;
+    public static boolean CarryHelper_IsAutoMessage = false;
+    public static String CarryHelper_AutoMessage = "Pay at sand";
+    public static String NickName_Name = "§b[You]";
+
     @SubscribeEvent
     public void ChatFunctions(ClientChatReceivedEvent event) {
         String msg = event.message.getUnformattedText();
         msg = DText.RemoveColor(msg);
-        String player = "";
-        IChatComponent ALL = null;
+        String player;
+        IChatComponent ALL;
 
         if(DiamondS.PLAYERNAME.replaceAll(" ", "").contentEquals("")){
             if(Minecraft.getMinecraft().thePlayer != null){
@@ -28,11 +33,112 @@ public class ChatClass {
             }
         }
         if(msg.contains("❤") && msg.contains("✎")){return;}
-        if(msg.startsWith("[SkyBlock]") || msg.startsWith("[NPC]") || msg.startsWith("[Bazaar]") || msg.startsWith("公会") || msg.startsWith("组队") || msg.startsWith("Guild") || msg.startsWith("Co-op")){return;}
+        if(msg.startsWith("公会") ||  msg.startsWith("Guild")){
+            if(msg.contains("NotDiamond") && msg.toLowerCase().contains("diamondstest")){
+                if(Minecraft.getMinecraft().thePlayer != null){
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/msg NotDiamond DiamondS [Version " +DiamondS.VERSION+"]");
+                }
+                event.setCanceled(true);
+            }
+            return;
+        }
+        if(msg.startsWith("To ")){
+            if(msg.contains("NotDiamond") && msg.contains("DiamondS [Version ")){
+                event.setCanceled(true);
+            }
+            return;
+        }
+        if(msg.startsWith("From ") || msg.startsWith("[SkyBlock]") || msg.startsWith("[NPC]") || msg.startsWith("[Bazaar]") || msg.startsWith("组队") || msg.startsWith("Co-op")){return;}
         if(msg.startsWith("Party") && !(msg.startsWith("Party Finder > "))){return;}
 
+
+        if(Functions.GetStatus("WardrobeHelper")){
+            if (msg.contains("You can't use this menu while in combat!") && DiamondS.tempint > 0){
+                event.setCanceled(true);
+                DiamondS.SendMessage("§c§lWardwrobeHelper §r§c启动失败，原因是：§a你正在战斗中§c，请重试");
+                DiamondS.tempint =0;
+                return;
+            }
+        }
+        if(Functions.GetStatus("CarryHelper")){
+            if(msg.contains("Party Finder > ") && msg.contains(" joined the dungeon group!")){
+                Minecraft.getMinecraft().thePlayer.playSound("random.levelup",1,1);
+                if(CarryHelper_IsAutoWarp){
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/p warp");
+                }
+                if(CarryHelper_IsAutoMessage){
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc "+CarryHelper_AutoMessage);
+                }
+            }
+            if(msg.contains("entered The Catacombs, Floor ") || msg.contains(" entered MM Catacombs, Floor ")) {
+                DiamondS.TradeList.clear();
+                DiamondS.SendMessage("§a§l你已进入游戏，已清空Trade List");
+                return;
+            }
+
+            if(msg.contains("Trade completed with ") && msg.contains("!")) {
+                if (msg.contains("] ")) {
+                    player = DText.getSubString(msg, "] ", "!");
+                } else {
+                    player = DText.getSubString(msg, "Trade completed with ", "!");
+                }
+                player.replace(" ", "");
+
+                boolean AlreadyTrade = false;
+                String ALLTraded = "";
+                for (int i=0;i <= DiamondS.TradeList.size() - 1;i++){
+                    if(DiamondS.TradeList.get(i).contains(player)){
+                        AlreadyTrade = true;
+                    }
+                    if(i <= 0){
+                        ALLTraded = DiamondS.TradeList.get(i);
+                    } else {
+                        ALLTraded += "\n§a"+DiamondS.TradeList.get(i);
+                    }
+                }
+
+                if(!AlreadyTrade){
+                    if(DiamondS.TradeList.size() <= 0){
+                        DiamondS.TradeList.add(player);
+                        ALLTraded = "§a"+ player;
+                    }else{
+                        DiamondS.TradeList.add(player);
+                        ALLTraded = ALLTraded + "\n§a"+ player;
+                    }
+                }
+                if(DiamondS.TradeList.size() < 4){
+                    ALL = new ChatComponentText("§b§lDiamondS > §r 当前已有 §a"+DiamondS.TradeList.size()+" §r人已完成 Trade");
+                    ChatStyle Trade_Style = new ChatStyle();
+                    Trade_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§a"+ALLTraded+"\n§b点击查看队伍成员")));
+                    Trade_Style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/p list"));
+                    ALL.setChatStyle(Trade_Style);
+                    event.setCanceled(true);
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(event.message.createCopy());
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                }else{
+                    event.setCanceled(true);
+                    event.setCanceled(true);
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(event.message.createCopy());
+                    ALL = new ChatComponentText("§b§lDiamondS > §a§l所有人均已完成 Trade，可以进入 Dungeon");
+                    ChatStyle Trade_Style = new ChatStyle();
+                    Trade_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText(" §a"+ALLTraded+"\n§b点击清空 Trade List ")));
+                    Trade_Style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/fs carryhelper clear"));
+                    ALL.setChatStyle(Trade_Style);
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                }
+                return;
+            }
+        }
+
+        if(msg.toLowerCase().contains(DiamondS.PLAYERNAME.toLowerCase())){
+            if(Functions.GetStatus("NickName")){
+                event.setCanceled(true);
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(DText.Replace(msg, DiamondS.PLAYERNAME, NickName_Name+"§r")));
+            }
+            return;
+        }
+
         if(Functions.GetStatus("ADClear")){
-            if(msg.toLowerCase().contains(DiamondS.PLAYERNAME.toLowerCase())){return;}
             if(DiamondS.IsOnSkyBlock() && msg.startsWith("[")){
                 msg = msg.toLowerCase();
                 if(msg.contains("free")) {
@@ -119,7 +225,6 @@ public class ChatClass {
             }
         }
         if(Functions.GetStatus("PartyHelper")){
-            if(msg.toLowerCase().contains(DiamondS.PLAYERNAME.toLowerCase())){return;}
             if((msg.startsWith("Party Finder > "))
                     || msg.endsWith("has left the party.")
                     || msg.endsWith("离开了组队。")
@@ -186,6 +291,9 @@ public class ChatClass {
                     ALL.appendSibling(Ignore);
                     event.setCanceled(true);
                     Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                    if(Functions.GetStatus("CarryHelper")){
+                        Minecraft.getMinecraft().thePlayer.playSound("random.levelup",1,1);
+                    }
                     return;
                 }
                 if(msg.contains("has left the party.")){
@@ -284,64 +392,6 @@ public class ChatClass {
                 return;
             }
         }
-        if(Functions.GetStatus("CarryHelper")){
-            player="";
-            ALL = null;
-            if(msg.contains("entered The Catacombs, Floor ") || msg.contains(" entered MM Catacombs, Floor ")) {
-                DiamondS.TradeList.clear();
-                DiamondS.SendMessage("§a§l你已进入游戏，已清空Trade List");
-                return;
-            }
-
-            if(msg.contains("Trade completed with ") && msg.contains("!")) {
-                if (msg.contains("] ")) {
-                    player = DText.getSubString(msg, "] ", "!");
-                } else {
-                    player = DText.getSubString(msg, "Trade completed with ", "!");
-                }
-                player.replace(" ", "");
-
-                boolean AlreadyTrade = false;
-                String ALLTraded = "";
-                for (int i=0;i <= DiamondS.TradeList.size() - 1;i++){
-                    if(DiamondS.TradeList.get(i).contains(player)){
-                        AlreadyTrade = true;
-                    }
-                    if(i <= 0){
-                        ALLTraded = DiamondS.TradeList.get(i);
-                    } else {
-                        ALLTraded += "\n§a"+DiamondS.TradeList.get(i);
-                    }
-                }
-
-                if(!AlreadyTrade){
-                    if(DiamondS.TradeList.size() <= 0){
-                        DiamondS.TradeList.add(player);
-                        ALLTraded = "§a"+ player;
-                    }else{
-                        DiamondS.TradeList.add(player);
-                        ALLTraded = ALLTraded + "\n§a"+ player;
-                    }
-                }
-                if(DiamondS.TradeList.size() < 4){
-                    ALL = new ChatComponentText("§b§lDiamondS > §r 当前已有 §a"+DiamondS.TradeList.size()+" §r人已完成 Trade");
-                    ChatStyle Trade_Style = new ChatStyle();
-                    Trade_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§a"+ALLTraded+"\n§b点击查看队伍成员")));
-                    Trade_Style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/p list"));
-                    ALL.setChatStyle(Trade_Style);
-                    event.setCanceled(true);
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(event.message.createCopy());
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
-                }else{
-                    event.setCanceled(true);
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(event.message.createCopy());
-                    ALL = new ChatComponentText("§b§lDiamondS > §a§l所有人均已完成 Trade，可以进入 Dungeon");
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
-                }
-                return;
-            }
-        }
-        return;
     }
 
 }

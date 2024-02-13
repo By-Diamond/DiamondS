@@ -1,14 +1,15 @@
 package com.notdiamond.diamonds.functions;
 
-import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Functions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class HidePlayers {
+    public static boolean Reload = false;
     @SubscribeEvent
     public void HidePlayers(EntityEvent event) {
         if(Functions.GetStatus("HidePlayers")){
@@ -22,7 +23,6 @@ public class HidePlayers {
                 event.entity.setCurrentItemOrArmor(3,null);
                 event.entity.setCurrentItemOrArmor(4,null);
                 event.entity.setInvisible(true);
-                return;
             }
         }
     }
@@ -30,8 +30,15 @@ public class HidePlayers {
     @SubscribeEvent
     public void AutoOFF(WorldEvent.Unload event) {
         if(Functions.GetStatus("HidePlayers")){
+            HidePlayers.Reload = true;
             Functions.SetStatus("HidePlayers",false);
-            DiamondS.SendMessage("§c检测到更换世界，已自动关闭 §lHidePlayers");
+        }
+    }
+    @SubscribeEvent
+    public void AutoON(RenderWorldLastEvent event) {
+        if(!Functions.GetStatus("HidePlayers") && HidePlayers.Reload){
+            HidePlayers.Reload = false;
+            Functions.SetStatus("HidePlayers",true);
         }
     }
 }
