@@ -31,14 +31,14 @@ import java.util.ArrayList;
 
 @Mod(
         modid = DiamondS.MODID,
-        name = DiamondS.MODNAME,
         version = DiamondS.VERSION,
+        name = DiamondS.MODNAME,
         acceptedMinecraftVersions = "[1.8.9]",
         clientSideOnly = true
 )
 public class DiamondS extends Component {
     public static final String MODID = "diamonds";
-    public static final String VERSION = "1.3.0";
+    public static final String VERSION = "1.4.0";
     public static final String MODNAME = "DiamondS";
     public static String PLAYERNAME = "";
     public static ArrayList<String> TradeList = new ArrayList();
@@ -54,6 +54,7 @@ public class DiamondS extends Component {
             ClientRegistry.registerKeyBinding(KeyLoader.HUDDown);
             ClientRegistry.registerKeyBinding(KeyLoader.HUDEnter);
             ClientRegistry.registerKeyBinding(KeyLoader.HUDBack);
+            ClientRegistry.registerKeyBinding(KeyLoader.FunctionSet);
 
             MinecraftForge.EVENT_BUS.register(new ChatClass());
             MinecraftForge.EVENT_BUS.register(new HidePlayers());
@@ -61,6 +62,8 @@ public class DiamondS extends Component {
             MinecraftForge.EVENT_BUS.register(new MovementClass());
             MinecraftForge.EVENT_BUS.register(new HideArmor());
             MinecraftForge.EVENT_BUS.register(new HUD());
+            MinecraftForge.EVENT_BUS.register(new AngleLock());
+
 
             Functions.RegisterFunctionType("Chat");
             Functions.RegisterFunctionType("Render");
@@ -76,7 +79,10 @@ public class DiamondS extends Component {
             Functions.RegisterFunction("WardrobeHelper","Player",true);
             Functions.RegisterFunction("Sprint","Player",true);
             Functions.RegisterFunction("Sneak","Player",false);
+            Functions.RegisterFunction("AngleLock","Player",false);
             Functions.RegisterFunction("NickName","Player",false);
+
+
 
             ClientCommandHandler.instance.registerCommand(new menu());
             ClientCommandHandler.instance.registerCommand(new FunctionSwitch());
@@ -96,6 +102,7 @@ public class DiamondS extends Component {
         //注册事件 MinecraftForge.EVENT_BUS.register(new PartyHelper());
         //注册功能设置 com.notdiamond.diamonds.commands.FunctionSettings
     }
+
 
     public static void SendMessage(String Message){
         if(Minecraft.getMinecraft().thePlayer != null){

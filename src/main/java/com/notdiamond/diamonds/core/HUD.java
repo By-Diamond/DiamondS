@@ -1,4 +1,5 @@
 package com.notdiamond.diamonds.core;
+import com.notdiamond.diamonds.commands.FunctionSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -66,6 +67,20 @@ public class HUD {
                 String theFunction;
                 theFunction=Functions.FunctionTypes.get(CurrectType).GetFunctionList().get(CurrectFunction);
                 Functions.FunctionSwitch(theFunction);
+            }
+        }
+        if(KeyLoader.HUDBack.isPressed()){
+            if(CurrectFunction != -1){
+                CurrectFunction = -1;
+            }
+        }
+        if(KeyLoader.FunctionSet.isPressed()){
+            if(CurrectFunction != -1){
+                String theFunction;
+                theFunction=Functions.FunctionTypes.get(CurrectType).GetFunctionList().get(CurrectFunction);
+                String[] args = new String[1];
+                args[0] = theFunction;
+                FunctionSettings.SetFunctions(args);
             }
         }
         if(KeyLoader.HUDBack.isPressed()){

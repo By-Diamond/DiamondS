@@ -10,15 +10,17 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class MovementClass{
     @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event){
-        if(Functions.GetStatus("Sneak")){
-            if(!Minecraft.getMinecraft().gameSettings.keyBindSneak.isKeyDown()) {
-                KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(),true);
+    public void onTick(TickEvent.ClientTickEvent event) {
+        if (Functions.GetStatus("Sneak")) {
+            if (!Minecraft.getMinecraft().gameSettings.keyBindSneak.isKeyDown()) {
+                KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), true);
             }
         }
-        if(Functions.GetStatus("Sprint")){
-            if(!Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown()) {
-                KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode(),true);
+        if (Functions.GetStatus("Sprint")) {
+            if (Minecraft.getMinecraft().thePlayer != null) {
+                if (!Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown()) {
+                    KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode(), true);
+                }
             }
         }
     }

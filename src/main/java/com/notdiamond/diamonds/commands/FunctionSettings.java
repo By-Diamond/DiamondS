@@ -4,8 +4,10 @@ import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.core.HUD;
+import com.notdiamond.diamonds.functions.AngleLock;
 import com.notdiamond.diamonds.functions.ChatClass;
 import com.notdiamond.diamonds.functions.Debug;
+import com.notdiamond.diamonds.functions.WardrobeHelper;
 import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
@@ -33,12 +35,18 @@ public class FunctionSettings extends CommandBase {
     }
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        if(args.length < 2){
+        SetFunctions(args);
+    }
+    public static void SetFunctions(String args[]){
+        if(args.length < 1){
             DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...");
             return;
         }
         String theFunction = args[0].toLowerCase().replaceAll(" ", "");
-        String theSetting = args[1].toLowerCase().replaceAll(" ", "");
+        String theSetting ="";
+        if(args.length >= 2){
+            theSetting = args[1].toLowerCase().replaceAll(" ", "");
+        }
         IChatComponent Message = new ChatComponentText("[查看可选设置项]");
         ChatStyle Message_Style = new ChatStyle();
         Message_Style.setColor(EnumChatFormatting.GREEN);
@@ -53,6 +61,7 @@ public class FunctionSettings extends CommandBase {
             if(theSetting.contentEquals("autowarp")){
                 if(args.length < 3){
                     DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs CarryHelper AutoWarp <true/false>");
+                    return;
                 }
                 boolean NewStatus = Boolean.parseBoolean(args[2]);
                 ChatClass.CarryHelper_IsAutoWarp = NewStatus;
@@ -67,6 +76,7 @@ public class FunctionSettings extends CommandBase {
             if(theSetting.contentEquals("automsg")){
                 if(args.length < 3){
                     DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs CarryHelper AutoMsg <true/false>");
+                    return;
                 }
                 boolean NewStatus = Boolean.parseBoolean(args[2]);
                 ChatClass.CarryHelper_IsAutoMessage = NewStatus;
@@ -81,6 +91,7 @@ public class FunctionSettings extends CommandBase {
             if(theSetting.contentEquals("msg")){
                 if(args.length < 3){
                     DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs CarryHelper Msg <内容>");
+                    return;
                 }
                 String Content = "";
                 for (int i=2;i<=args.length-1;i++){
@@ -95,7 +106,7 @@ public class FunctionSettings extends CommandBase {
                 Config.saveConfig();
                 return;
             }
-            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bclear - 清空Trade List\n§bAutoWarp - 玩家进入自动/p warp\n§bAutoMsg - 玩家进入自动发送消息\n§bMsg - 设置AutoMsg消息内容")));
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bclear - 清空Trade List\n§bAutoWarp - 玩家进入自动/p warp\n§bAutoMsg - 玩家进入自动发送消息\n§bMsg - 设置AutoMsg消息内容\n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
             Message.setChatStyle(Message_Style);
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;
@@ -106,7 +117,17 @@ public class FunctionSettings extends CommandBase {
                 DiamondS.SendMessage("§a重置 §lWardrobeHelper §r§a功能进程成功");
                 return;
             }
-            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bclear - 重置功能进程")));
+            if(theSetting.contentEquals("delay")){
+                if(args.length < 3){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs WardrobeHelper delay <数值/ms>");
+                    return;
+                }
+                WardrobeHelper.Delay = Integer.parseInt(args[2]);
+                DiamondS.SendMessage("§a设置§l Delay §r§a为 §r" + args[2]+ "§r§ams");
+                Config.saveConfig();
+                return;
+            }
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bclear - 重置功能进程\n§bdelay - 设置点击延迟(单位 ms)\n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
             Message.setChatStyle(Message_Style);
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;
@@ -115,14 +136,23 @@ public class FunctionSettings extends CommandBase {
             if(theSetting.contentEquals("name")){
                 if(args.length < 3){
                     DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs NickName <名称>");
+                    return;
                 }
-                String NewName = DText.AddColor(args[2]);
+                String NewName = args[2];
+                for (int i=2;i<=args.length-1;i++){
+                    if(i==2){
+                        NewName=args[2];
+                    }else{
+                        NewName+=" "+args[i];
+                    }
+                }
+                NewName = DText.AddColor(NewName);
                 ChatClass.NickName_Name = NewName;
                 DiamondS.SendMessage("§a设置§l NickName §r§a为：§r"+NewName);
                 Config.saveConfig();
                 return;
             }
-            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bName - 设置匿名名称(支持颜色，例如&a&1)")));
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bName - 设置匿名名称(支持颜色，例如§a&a§1&1§b)\n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
             Message.setChatStyle(Message_Style);
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;
@@ -130,6 +160,7 @@ public class FunctionSettings extends CommandBase {
         if(theFunction.contentEquals("hud")){
             if(args.length < 3){
                 DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs HUD <功能设置项(X/Y)> <数值(位置)>");
+                return;
             }
             if(theSetting.contentEquals("x")){
                 HUD.X = Integer.parseInt(args[2]);
@@ -144,7 +175,7 @@ public class FunctionSettings extends CommandBase {
                 return;
             }
 
-            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bX - 设置HUD X轴位置\n§bY - 设置HUD Y轴位置")));
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bX - 设置HUD X轴位置\n§bY - 设置HUD Y轴位置 \n\n§a用法为：§l/fs HUD <功能设置项(X/Y)> <数值(位置)>")));
             Message.setChatStyle(Message_Style);
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;
@@ -160,7 +191,76 @@ public class FunctionSettings extends CommandBase {
                 }
                 return;
             }
-            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bMsgCopy - 自动复制玩家消息")));
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bMsgCopy - 自动复制玩家消息\n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
+            Message.setChatStyle(Message_Style);
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
+            return;
+        }
+        if(theFunction.contentEquals("anglelock")){
+            if(theSetting.contentEquals("yaw")){
+                if(args.length < 3){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs MacroHelper Yaw <数值[-180,180)>");
+                    return;
+                }
+                int Value = Integer.parseInt(args[2]);
+                if(Value >= 180 || Value < -180){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs MacroHelper Yaw <数值[-180,180)>");
+                    return;
+                }
+                AngleLock.Yaw = Value;
+                DiamondS.SendMessage("§a设置§l Yaw §r§a为 §b§l"+args[2]+"§r§a°");
+                Config.saveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("pitch")){
+                if(args.length < 3){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs MacroHelper Pitch <数值[-90,90]>");
+                    return;
+                }
+                int Value = Integer.parseInt(args[2]);
+                if(Value > 90 || Value < -90){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs MacroHelper Pitch <数值[-90,90]>");
+                    return;
+                }
+                AngleLock.Pitch = Value;
+                DiamondS.SendMessage("§a设置§l Pitch §r§a为 §b§l"+args[2]+"§r§a°");
+                Config.saveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("autobreak")){
+                boolean NewStatus = Boolean.parseBoolean(args[2]);
+                AngleLock.AutoBreak = NewStatus;
+                if(NewStatus){
+                    DiamondS.SendMessage("§a设置§l AutoBreak §r§a开启成功");
+                }else{
+                    DiamondS.SendMessage("§a设置§l AutoBreak §r§c关闭§a成功");
+                }
+                Config.saveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("lockpitch")){
+                boolean NewStatus = Boolean.parseBoolean(args[2]);
+                AngleLock.LockPitch = NewStatus;
+                if(NewStatus){
+                    DiamondS.SendMessage("§a设置§l LockPitch §r§a开启成功");
+                }else{
+                    DiamondS.SendMessage("§a设置§l LockPitch §r§c关闭§a成功");
+                }
+                Config.saveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("lockyaw")){
+                boolean NewStatus = Boolean.parseBoolean(args[2]);
+                AngleLock.LockYaw = NewStatus;
+                if(NewStatus){
+                    DiamondS.SendMessage("§a设置§l LockYaw §r§a开启成功");
+                }else{
+                    DiamondS.SendMessage("§a设置§l LockYaw §r§c关闭§a成功");
+                }
+                Config.saveConfig();
+                return;
+            }
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bYaw - 设置水平视角角度[-180,180)(单位 °)\n§bPitch - 设置垂直视角角度[-90,90](单位 °)\n§bAutoBreak - 是否自动破坏(true/false)\n§bLockYaw - 是否锁定水平视角角度(true/false)\n§bLockPitch - 是否锁定垂直视角角度(true/false) \n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
             Message.setChatStyle(Message_Style);
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;

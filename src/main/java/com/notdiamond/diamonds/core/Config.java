@@ -1,7 +1,9 @@
 package com.notdiamond.diamonds.core;
 
 
+import com.notdiamond.diamonds.functions.AngleLock;
 import com.notdiamond.diamonds.functions.ChatClass;
+import com.notdiamond.diamonds.functions.WardrobeHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,14 +31,13 @@ public class Config
                 saveConfig();
             }else{
                 for(int i = 0;i<=Functions.FunctionList.size()-1;i++){
-                    if(Functions.FunctionList.get(i).Name.contentEquals("HidePlayers")){
-                        Functions.SetStatus("HidePlayers",false);
-                    } else if (Functions.FunctionList.get(i).Name.contentEquals("HideArmor")) {
-                        Functions.SetStatus("HideArmor",false);
-                    } else{
-                        String Status = Config.prop.getProperty("Functions."+Functions.FunctionList.get(i).Name);
+                    String Name = Functions.FunctionList.get(i).Name;
+                    if(Name.contentEquals("HidePlayers") || Name.contentEquals("HideArmor") || Name.contentEquals("AngleLock")){
+                        Functions.SetStatus(Name,false);
+                    }else{
+                        String Status = Config.prop.getProperty("Functions."+Name);
                         if(Status != null && !(Status.contentEquals(""))){
-                            Functions.SetStatus(Functions.FunctionList.get(i).Name,Boolean.parseBoolean(Status));
+                            Functions.SetStatus(Name,Boolean.parseBoolean(Status));
                         }
                     }
                 }
@@ -46,6 +47,13 @@ public class Config
                 ChatClass.CarryHelper_IsAutoMessage = Boolean.parseBoolean(Config.prop.getProperty("CarryHelper.AutoMessage", "false"));
                 ChatClass.CarryHelper_AutoMessage = Config.prop.getProperty("CarryHelper.Msg", "Pay at sand");
                 ChatClass.NickName_Name = Config.prop.getProperty("NickName.Name", "§b[You]");
+                WardrobeHelper.Delay = Integer.parseInt(Config.prop.getProperty("WardrobeHelper.Delay", "500"));
+                AngleLock.Pitch = Integer.parseInt(Config.prop.getProperty("AngleLock.Pitch", "0"));
+                AngleLock.Yaw = Integer.parseInt(Config.prop.getProperty("AngleLock.Yaw", "90"));
+                AngleLock.AutoBreak = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.AutoBreak","false"));
+                AngleLock.LockPitch = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.LockPitch","true"));
+                AngleLock.LockYaw = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.LockYaw","true"));
+
             }
     }
 
@@ -60,6 +68,13 @@ public class Config
                 Config.prop.setProperty("CarryHelper.AutoMessage", String.valueOf(ChatClass.CarryHelper_IsAutoMessage));
                 Config.prop.setProperty("CarryHelper.Msg", ChatClass.CarryHelper_AutoMessage);
                 Config.prop.setProperty("NickName.Name", ChatClass.NickName_Name);
+                Config.prop.setProperty("WardrobeHelper.Delay", String.valueOf(WardrobeHelper.Delay));
+                Config.prop.setProperty("AngleLock.Pitch", String.valueOf(AngleLock.Pitch));
+                Config.prop.setProperty("AngleLock.Yaw", String.valueOf(AngleLock.Yaw));
+                Config.prop.setProperty("AngleLock.AutoBreak", String.valueOf(AngleLock.AutoBreak));
+                Config.prop.setProperty("AngleLock.LockYaw", String.valueOf(AngleLock.LockYaw));
+                Config.prop.setProperty("AngleLock.LockPitch", String.valueOf(AngleLock.LockPitch));
+
 
                 FileOutputStream fos = new FileOutputStream(Config.fileName);
                 Config.prop.store(fos, null);

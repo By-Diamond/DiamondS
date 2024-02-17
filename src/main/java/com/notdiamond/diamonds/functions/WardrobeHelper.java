@@ -2,26 +2,20 @@ package com.notdiamond.diamonds.functions;
 
 import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Functions;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static net.minecraft.client.Minecraft.*;
-import static scala.tools.nsc.typechecker.Macros$class.Delay;
 
 public class WardrobeHelper {
+    public static int Delay = 500;
+
     @SubscribeEvent
     public void WardrobeHelper(final GuiOpenEvent event) throws InterruptedException {
         if (event.gui instanceof GuiChest) {
@@ -32,8 +26,10 @@ public class WardrobeHelper {
                     final TimerTask task2 = new TimerTask() {
                         @Override
                         public void run() {
-                            getMinecraft().thePlayer.closeScreen();
-                            DiamondS.tempint = 0;
+                            if(getMinecraft().thePlayer.openContainer != null){
+                                getMinecraft().thePlayer.closeScreen();
+                                DiamondS.tempint = 0;
+                            }
                         }
                     };
                     TimerTask task1 = new TimerTask() {
@@ -57,7 +53,7 @@ public class WardrobeHelper {
                                             getMinecraft().thePlayer
                                     );
                                     Timer timer2 = new Timer();
-                                    timer2.schedule(task2, 500);
+                                    timer2.schedule(task2, Delay);
                                     DiamondS.tempint = 0;
                                 }
                             }
@@ -70,14 +66,12 @@ public class WardrobeHelper {
                                         getMinecraft().thePlayer
                                 );
                                 Timer timer2 = new Timer();
-                                timer2.schedule(task2, 300);
-                                return;
+                                timer2.schedule(task2, Delay);
                             }
                         }
                     };
                     Timer timer1 = new Timer();
-                    timer1.schedule(task1, 300);
-                    return;
+                    timer1.schedule(task1, Delay);
                 }
             }
         }
