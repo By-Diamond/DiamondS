@@ -19,6 +19,7 @@
 - **Sneak**  强制潜行
 - **HUD**  可视化菜单
 - **NickName**  匿名
+- **AngleLock**  锁定视角角度(用于 Macro)
 
 # Commands
 - **/menu** 打开菜单
