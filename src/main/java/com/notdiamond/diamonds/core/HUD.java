@@ -5,6 +5,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 
+import java.io.IOException;
+
 public class HUD {
 
     public static int CurrectType =0;
@@ -30,7 +32,7 @@ public class HUD {
         }
     }
     @SubscribeEvent
-    public void OnKeyPressed(InputEvent.KeyInputEvent event){
+    public void OnKeyPressed(InputEvent.KeyInputEvent event) throws IOException {
         if(!Functions.GetStatus("HUD")){
             return;
         }
@@ -100,7 +102,7 @@ public class HUD {
                     TempText = "§b§l> §r"+TempText;
                 }
                 if(i==0){
-                    TotalText = "§b§lDiamondS §r§bMenu\n"+TempText;
+                    TotalText = "§b「 §lDiamondS §r§bMenu 」\n"+TempText;
                 }else{
                     TotalText += "\n"+TempText;
                 }
@@ -120,7 +122,7 @@ public class HUD {
                     TempText = "§b§l> §r"+TempText;
                 }
                 if(i==0){
-                    TotalText = "§b§l"+Functions.FunctionTypes.get(CurrectType).GetName()+"\n"+TempText;
+                    TotalText = "§b「 §l"+Functions.FunctionTypes.get(CurrectType).GetName()+" 」\n"+TempText;
                 }else{
                     TotalText += "\n"+TempText;
                 }

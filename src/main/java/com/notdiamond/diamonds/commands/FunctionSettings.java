@@ -4,10 +4,12 @@ import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.core.HUD;
-import com.notdiamond.diamonds.functions.AngleLock;
-import com.notdiamond.diamonds.functions.ChatClass;
+import com.notdiamond.diamonds.functions.Macro.PlayerFinder.PlayerFinder;
+import com.notdiamond.diamonds.functions.Macro.WormCleaner;
+import com.notdiamond.diamonds.functions.Player.AngleLock;
+import com.notdiamond.diamonds.functions.Chat.ChatClass;
 import com.notdiamond.diamonds.functions.Debug;
-import com.notdiamond.diamonds.functions.WardrobeHelper;
+import com.notdiamond.diamonds.functions.Player.WardrobeHelper;
 import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
@@ -18,6 +20,10 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.MinecraftForge;
+
+import java.io.IOException;
+
+import static com.notdiamond.diamonds.DiamondS.mc;
 
 public class FunctionSettings extends CommandBase {
     @Override
@@ -35,9 +41,13 @@ public class FunctionSettings extends CommandBase {
     }
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        SetFunctions(args);
+        try {
+            SetFunctions(args);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-    public static void SetFunctions(String args[]){
+    public static void SetFunctions(String args[]) throws IOException {
         if(args.length < 1){
             DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...");
             return;
@@ -197,6 +207,14 @@ public class FunctionSettings extends CommandBase {
             return;
         }
         if(theFunction.contentEquals("anglelock")){
+            if(theSetting.contentEquals("setrot")){
+                AngleLock.Yaw = (int) mc.thePlayer.rotationYaw;
+                AngleLock.Pitch = (int) mc.thePlayer.rotationPitch;
+                DiamondS.SendMessage("§a设置§l Yaw §r§a为 §b§l"+ AngleLock.Yaw+"§r§a°");
+                DiamondS.SendMessage("§a设置§l Pitch §r§a为 §b§l"+ AngleLock.Pitch+"§r§a°");
+                Config.saveConfig();
+                return;
+            }
             if(theSetting.contentEquals("yaw")){
                 if(args.length < 3){
                     DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs MacroHelper Yaw <数值[-180,180)>");
@@ -260,12 +278,92 @@ public class FunctionSettings extends CommandBase {
                 Config.saveConfig();
                 return;
             }
-            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bYaw - 设置水平视角角度[-180,180)(单位 °)\n§bPitch - 设置垂直视角角度[-90,90](单位 °)\n§bAutoBreak - 是否自动破坏(true/false)\n§bLockYaw - 是否锁定水平视角角度(true/false)\n§bLockPitch - 是否锁定垂直视角角度(true/false) \n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bSetRot - 快速设置Yaw和Pitch为玩家当前朝向\n§bYaw - 设置水平视角角度[-180,180)(单位 °)\n§bPitch - 设置垂直视角角度[-90,90](单位 °)\n§bAutoBreak - 是否自动破坏(true/false)\n§bLockYaw - 是否锁定水平视角角度(true/false)\n§bLockPitch - 是否锁定垂直视角角度(true/false) \n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
             Message.setChatStyle(Message_Style);
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;
         }
-        //
+        if(theFunction.contentEquals("wormcleaner")){
+            if(theSetting.contentEquals("settoolslot")){
+                WormCleaner.ToolSlot = Minecraft.getMinecraft().thePlayer.inventory.currentItem;
+                DiamondS.SendMessage("§a设置§l ToolSlot §r§a为 §b§l"+ WormCleaner.ToolSlot);
+                WormCleaner.SaveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("setrot")){
+                WormCleaner.TargetRotation[0] = mc.thePlayer.rotationYaw;
+                WormCleaner.TargetRotation[1] = mc.thePlayer.rotationPitch;
+                DiamondS.SendMessage("§a设置§l 目标Yaw §r§a为 §b§l"+ WormCleaner.TargetRotation[0]+"§r§a°");
+                DiamondS.SendMessage("§a设置§l 目标Pitch §r§a为 §b§l"+ WormCleaner.TargetRotation[1]+"§r§a°");
+                WormCleaner.SaveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("settxtpos")){
+                if(args.length < 4){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs WormCleaner SetTxtPos <整数 (X轴位置)> <整数 (Y轴位置)>");
+                    return;
+                }
+                WormCleaner.TextPosition[0] = Integer.parseInt(args[2]);
+                WormCleaner.TextPosition[1] = Integer.parseInt(args[3]);
+
+                DiamondS.SendMessage("§a设置§l TextPosition §r§a为 X:§b§l"+ WormCleaner.TextPosition[0]+"§r§a Y:§b§l"+ WormCleaner.TextPosition[1]);
+                WormCleaner.SaveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("settimes")){
+                if(args.length < 3 || Integer.parseInt(args[2]) <0){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs WormCleaner SetTimes <整数 (次数)>");
+                    return;
+                }
+                WormCleaner.Times = Integer.parseInt(args[2]);
+                DiamondS.SendMessage("§a设置§l Times §r§a为:§b§l "+ WormCleaner.Times);
+                WormCleaner.SaveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("setmaxqty")){
+                if(args.length < 3 || Integer.parseInt(args[2]) <0){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs WormCleaner SetMaxQty <整数 (Worm数量)>");
+                    return;
+                }
+                WormCleaner.MaxQuantity = Integer.parseInt(args[2]);
+
+                DiamondS.SendMessage("§a设置§l MaxQuantity §r§a为:§b§l "+ WormCleaner.MaxQuantity);
+                WormCleaner.SaveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("setdelay")){
+                if(args.length < 3 || Integer.parseInt(args[2]) <0){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs WormCleaner SetDelay <整数 (延迟/ms)>");
+                    return;
+                }
+                WormCleaner.Delay = Integer.parseInt(args[2]);
+                DiamondS.SendMessage("§a设置§l Delay §r§a为:§b§l "+ WormCleaner.Delay);
+                WormCleaner.SaveConfig();
+                return;
+            }
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bSetToolSlot - 设置清虫工具为当前持有物品Slot\n§bSetRot - 设置玩家当前朝向为Worm位置\n§bSetTxtPos - 设置文字位置\n§bSetTimes - 设置工具使用次数\n§bSetMaxQty - 设置允许的最大worm数量\n§bSetDelay - 设置右击工具间隔时间(单位 ms) \n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
+            Message.setChatStyle(Message_Style);
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
+            return;
+        }
+        if(theFunction.contentEquals("playerfinder")){
+            if(theSetting.contentEquals("settxtpos")){
+                if(args.length < 4){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs PlayerFinder SetTxtPos <整数 (X轴位置)> <整数 (Y轴位置)>");
+                    return;
+                }
+                PlayerFinder.TextPosition[0] = Integer.parseInt(args[2]);
+                PlayerFinder.TextPosition[1] = Integer.parseInt(args[3]);
+
+                DiamondS.SendMessage("§a设置§l TextPosition §r§a为 X:§b§l"+ PlayerFinder.TextPosition[0]+"§r§a Y:§b§l"+ PlayerFinder.TextPosition[1]);
+                PlayerFinder.SaveConfig();
+                return;
+            }
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bSetTxtPos - 设置文字位置\n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
+            Message.setChatStyle(Message_Style);
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
+            return;
+        }
         DiamondS.SendMessage("§c该功能无自定义设置 或 功能不存在");
     }
 }

@@ -1,9 +1,11 @@
 package com.notdiamond.diamonds.core;
 
 
-import com.notdiamond.diamonds.functions.AngleLock;
-import com.notdiamond.diamonds.functions.ChatClass;
-import com.notdiamond.diamonds.functions.WardrobeHelper;
+import com.notdiamond.diamonds.functions.Macro.PlayerFinder.PlayerFinder;
+import com.notdiamond.diamonds.functions.Macro.WormCleaner;
+import com.notdiamond.diamonds.functions.Player.AngleLock;
+import com.notdiamond.diamonds.functions.Chat.ChatClass;
+import com.notdiamond.diamonds.functions.Player.WardrobeHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,8 +15,8 @@ import java.util.Properties;
 
 public class Config
 {
-        private static Properties prop = new Properties();
-        private static String fileName = "";
+        public static Properties prop = new Properties();
+        public static String fileName = "";
 
         public static void SetConfig(String fileName) {
             Config.fileName = fileName;
@@ -53,6 +55,8 @@ public class Config
                 AngleLock.AutoBreak = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.AutoBreak","false"));
                 AngleLock.LockPitch = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.LockPitch","true"));
                 AngleLock.LockYaw = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.LockYaw","true"));
+                WormCleaner.LoadConfig();
+                PlayerFinder.LoadConfig();
 
             }
     }
@@ -74,8 +78,8 @@ public class Config
                 Config.prop.setProperty("AngleLock.AutoBreak", String.valueOf(AngleLock.AutoBreak));
                 Config.prop.setProperty("AngleLock.LockYaw", String.valueOf(AngleLock.LockYaw));
                 Config.prop.setProperty("AngleLock.LockPitch", String.valueOf(AngleLock.LockPitch));
-
-
+                WormCleaner.SaveConfig();
+                PlayerFinder.SaveConfig();
                 FileOutputStream fos = new FileOutputStream(Config.fileName);
                 Config.prop.store(fos, null);
             } catch (IOException e) {

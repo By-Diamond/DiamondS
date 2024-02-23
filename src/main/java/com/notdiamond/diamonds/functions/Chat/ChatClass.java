@@ -1,4 +1,4 @@
-package com.notdiamond.diamonds.functions;
+package com.notdiamond.diamonds.functions.Chat;
 
 import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Functions;
@@ -406,7 +406,6 @@ public class ChatClass {
             String tempmsg = event.message.getUnformattedText();
             if(tempmsg.contains(" is holding §8[") || tempmsg.contains(" is friends with a §8[") || tempmsg.contains(" is wearing §8[")){
                 event.setCanceled(true);
-                return;
             }
         }
     }

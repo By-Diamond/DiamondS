@@ -17,9 +17,12 @@
 - **IgnoreShow**  隐藏其他玩家/show指令内容
 - **Sprint**  强制疾跑
 - **Sneak**  强制潜行
+- **AutoJump**  强制跳跃
 - **HUD**  可视化菜单
 - **NickName**  匿名
 - **AngleLock**  锁定视角角度(用于 Macro)
+- **WormCleaner**  自动清理Worm(用于 Worm Macro)
+- **PlayerFinder**  查看附近的玩家列表
 
 # Commands
 - **/menu** 打开菜单

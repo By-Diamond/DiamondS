@@ -8,7 +8,14 @@ import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.core.HUD;
 import com.notdiamond.diamonds.core.KeyLoader;
-import com.notdiamond.diamonds.functions.*;
+import com.notdiamond.diamonds.functions.Chat.ChatClass;
+import com.notdiamond.diamonds.functions.Macro.PlayerFinder.PlayerFinder;
+import com.notdiamond.diamonds.functions.Macro.WormCleaner;
+import com.notdiamond.diamonds.functions.Movement.MovementClass;
+import com.notdiamond.diamonds.functions.Player.AngleLock;
+import com.notdiamond.diamonds.functions.Player.WardrobeHelper;
+import com.notdiamond.diamonds.functions.Render.HideArmor;
+import com.notdiamond.diamonds.functions.Render.HidePlayers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -38,11 +45,12 @@ import java.util.ArrayList;
 )
 public class DiamondS extends Component {
     public static final String MODID = "diamonds";
-    public static final String VERSION = "1.4.0";
+    public static final String VERSION = "1.5.0";
     public static final String MODNAME = "DiamondS";
     public static String PLAYERNAME = "";
     public static ArrayList<String> TradeList = new ArrayList();
     public static int tempint;
+    public static final Minecraft mc = Minecraft.getMinecraft();
 
     @EventHandler
     public void init(FMLInitializationEvent event) throws IOException {
@@ -63,25 +71,34 @@ public class DiamondS extends Component {
             MinecraftForge.EVENT_BUS.register(new HideArmor());
             MinecraftForge.EVENT_BUS.register(new HUD());
             MinecraftForge.EVENT_BUS.register(new AngleLock());
-
+            MinecraftForge.EVENT_BUS.register(new WormCleaner());
+            MinecraftForge.EVENT_BUS.register(new PlayerFinder());
 
             Functions.RegisterFunctionType("Chat");
-            Functions.RegisterFunctionType("Render");
+            Functions.RegisterFunctionType("Macro");
+            Functions.RegisterFunctionType("Movement");
             Functions.RegisterFunctionType("Player");
+            Functions.RegisterFunctionType("Render");
 
             Functions.RegisterFunction("PartyHelper","Chat",true);
             Functions.RegisterFunction("ADClear","Chat",true);
             Functions.RegisterFunction("CarryHelper","Chat",false);
             Functions.RegisterFunction("IgnoreShow","Chat",true);
-            Functions.RegisterFunction("HidePlayers","Render",false);
-            Functions.RegisterFunction("HideArmor","Render",false);
-            Functions.RegisterFunction("HUD","Render",true);
+
+            Functions.RegisterFunction("WormCleaner","Macro",false);
+            Functions.RegisterFunction("PlayerFinder","Macro",false);
+
+            Functions.RegisterFunction("Sprint","Movement",true);
+            Functions.RegisterFunction("Sneak","Movement",false);
+            Functions.RegisterFunction("AutoJump","Movement",false);
+
             Functions.RegisterFunction("WardrobeHelper","Player",true);
-            Functions.RegisterFunction("Sprint","Player",true);
-            Functions.RegisterFunction("Sneak","Player",false);
             Functions.RegisterFunction("AngleLock","Player",false);
             Functions.RegisterFunction("NickName","Player",false);
 
+            Functions.RegisterFunction("HidePlayers","Render",false);
+            Functions.RegisterFunction("HideArmor","Render",false);
+            Functions.RegisterFunction("HUD","Render",true);
 
 
             ClientCommandHandler.instance.registerCommand(new menu());

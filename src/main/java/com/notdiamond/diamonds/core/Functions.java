@@ -1,7 +1,7 @@
 package com.notdiamond.diamonds.core;
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.functions.HidePlayers;
+import com.notdiamond.diamonds.functions.Render.HidePlayers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 
@@ -54,6 +54,9 @@ public class Functions extends Component {
         }
         if(theFunction.contentEquals("sprint")){
             KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSprint.getKeyCode(),false);
+        }
+        if(theFunction.contentEquals("autojump")){
+            KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindJump.getKeyCode(),false);
         }
         //附加↑
         Config.saveConfig();
