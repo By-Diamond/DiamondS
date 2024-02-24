@@ -2,8 +2,6 @@ package com.notdiamond.diamonds.functions.Macro;
 
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -80,14 +78,14 @@ public class WormCleaner {
                     if(CurrectTime <= Times){
                         if(tick==1){
                             CurrectTime++;
-                            Minecraft.getMinecraft().thePlayer.inventory.currentItem = ToolSlot;
+                            mc.thePlayer.inventory.currentItem = ToolSlot;
                             mc.thePlayer.rotationYaw = TargetRotation[0];
                             mc.thePlayer.rotationPitch = TargetRotation[1];
                             if(Quantity <= 0){
                                 DuringClearer = false;
                                 tick=0;
                                 CurrectTime = 0;
-                                Minecraft.getMinecraft().thePlayer.inventory.currentItem = RodSlot;
+                                mc.thePlayer.inventory.currentItem = RodSlot;
                                 mc.thePlayer.rotationYaw = PlayerRotation[0];
                                 mc.thePlayer.rotationPitch = PlayerRotation[1];
                             }
@@ -104,7 +102,7 @@ public class WormCleaner {
                         DuringClearer = false;
                         tick=0;
                         CurrectTime = 0;
-                        Minecraft.getMinecraft().thePlayer.inventory.currentItem = RodSlot;
+                        mc.thePlayer.inventory.currentItem = RodSlot;
                         mc.thePlayer.rotationYaw = PlayerRotation[0];
                         mc.thePlayer.rotationPitch = PlayerRotation[1];
                     }

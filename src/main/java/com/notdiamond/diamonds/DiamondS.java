@@ -9,6 +9,8 @@ import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.core.HUD;
 import com.notdiamond.diamonds.core.KeyLoader;
 import com.notdiamond.diamonds.functions.Chat.ChatClass;
+import com.notdiamond.diamonds.functions.Dungeon.AntiInvisible;
+import com.notdiamond.diamonds.functions.Dungeon.GhostBlock;
 import com.notdiamond.diamonds.functions.Macro.PlayerFinder.PlayerFinder;
 import com.notdiamond.diamonds.functions.Macro.WormCleaner;
 import com.notdiamond.diamonds.functions.Movement.MovementClass;
@@ -50,12 +52,14 @@ public class DiamondS extends Component {
     public static String PLAYERNAME = "";
     public static ArrayList<String> TradeList = new ArrayList();
     public static int tempint;
-    public static final Minecraft mc = Minecraft.getMinecraft();
+    public static Minecraft mc = null;
 
     @EventHandler
     public void init(FMLInitializationEvent event) throws IOException {
         if(this.CheckUpdata()){
             System.out.println("DiamondS >> Mod 已开始加载");
+
+            mc = Minecraft.getMinecraft();
 
             new KeyLoader();
             ClientRegistry.registerKeyBinding(KeyLoader.HUDUP);
@@ -63,6 +67,7 @@ public class DiamondS extends Component {
             ClientRegistry.registerKeyBinding(KeyLoader.HUDEnter);
             ClientRegistry.registerKeyBinding(KeyLoader.HUDBack);
             ClientRegistry.registerKeyBinding(KeyLoader.FunctionSet);
+            ClientRegistry.registerKeyBinding(KeyLoader.GhostBlock);
 
             MinecraftForge.EVENT_BUS.register(new ChatClass());
             MinecraftForge.EVENT_BUS.register(new HidePlayers());
@@ -73,8 +78,11 @@ public class DiamondS extends Component {
             MinecraftForge.EVENT_BUS.register(new AngleLock());
             MinecraftForge.EVENT_BUS.register(new WormCleaner());
             MinecraftForge.EVENT_BUS.register(new PlayerFinder());
+            MinecraftForge.EVENT_BUS.register(new GhostBlock());
+            MinecraftForge.EVENT_BUS.register(new AntiInvisible());
 
             Functions.RegisterFunctionType("Chat");
+            Functions.RegisterFunctionType("Dungeon");
             Functions.RegisterFunctionType("Macro");
             Functions.RegisterFunctionType("Movement");
             Functions.RegisterFunctionType("Player");
@@ -84,6 +92,8 @@ public class DiamondS extends Component {
             Functions.RegisterFunction("ADClear","Chat",true);
             Functions.RegisterFunction("CarryHelper","Chat",false);
             Functions.RegisterFunction("IgnoreShow","Chat",true);
+
+            Functions.RegisterFunction("GhostBlock","Dungeon",false);
 
             Functions.RegisterFunction("WormCleaner","Macro",false);
             Functions.RegisterFunction("PlayerFinder","Macro",false);
@@ -96,6 +106,7 @@ public class DiamondS extends Component {
             Functions.RegisterFunction("AngleLock","Player",false);
             Functions.RegisterFunction("NickName","Player",false);
 
+            Functions.RegisterFunction("AntiInvisible","Render",true);
             Functions.RegisterFunction("HidePlayers","Render",false);
             Functions.RegisterFunction("HideArmor","Render",false);
             Functions.RegisterFunction("HUD","Render",true);

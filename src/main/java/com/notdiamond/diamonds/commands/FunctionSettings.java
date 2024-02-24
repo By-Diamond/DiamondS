@@ -4,6 +4,8 @@ import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.core.HUD;
+import com.notdiamond.diamonds.functions.Dungeon.AntiInvisible;
+import com.notdiamond.diamonds.functions.Dungeon.GhostBlock;
 import com.notdiamond.diamonds.functions.Macro.PlayerFinder.PlayerFinder;
 import com.notdiamond.diamonds.functions.Macro.WormCleaner;
 import com.notdiamond.diamonds.functions.Player.AngleLock;
@@ -145,7 +147,7 @@ public class FunctionSettings extends CommandBase {
         if(theFunction.contentEquals("nickname")){
             if(theSetting.contentEquals("name")){
                 if(args.length < 3){
-                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs NickName <名称>");
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs NickName Name <名称>");
                     return;
                 }
                 String NewName = args[2];
@@ -360,6 +362,82 @@ public class FunctionSettings extends CommandBase {
                 return;
             }
             Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText("§bSetTxtPos - 设置文字位置\n\n§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
+            Message.setChatStyle(Message_Style);
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
+            return;
+        }
+        if(theFunction.contentEquals("ghostblock")){
+            if(theSetting.contentEquals("itemname")){
+                if(args.length < 3){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs GhostBlock ItemName <物品名称(部分关键词)>");
+                    return;
+                }
+                String NewName = args[2];
+                for (int i=2;i<=args.length-1;i++){
+                    if(i==2){
+                        NewName=args[2];
+                    }else{
+                        NewName+=" "+args[i];
+                    }
+                }
+                GhostBlock.ItemName = NewName;
+                DiamondS.SendMessage("§a设置§l ItemName §r§a为：§r"+NewName);
+                GhostBlock.SaveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("type")){
+                if(args.length < 3){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs GhostBlock Type <功能方式(1/2/3/4)>");
+                    return;
+                }
+                int NewType = Integer.parseInt(args[2]);
+                if(NewType != 1 && NewType != 2 && NewType != 3 && NewType != 4){
+                    NewType = 1;
+                }
+                GhostBlock.type = NewType;
+                DiamondS.SendMessage("§a设置§l Type §r§a为：§r" + NewType);
+                GhostBlock.SaveConfig();
+                return;
+            }
+
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText(
+                        "§bType - 功能模式(1/2/3/4)\n" +
+                                "§a  - 1: 按下按键后创建GhostBlock(按键在 §b[游戏 > 选项 > 控制] §a中修改)\n" +
+                                "§a  - 2: 玩家蹲下时创建GhostBlock\n" +
+                                "§a  - 3: 手持指定物品§b右§a键创建GhostBlock(可以修改§bItemName§a更换物品)\n" +
+                                "§a  - 4: 手持指定物品§b左§a键创建GhostBlock(可以修改§bItemName§a更换物品)\n" +
+                            "§bItemName - 设置物品名称(可用部分关键词代替)\n\n" +
+                            "§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
+            Message.setChatStyle(Message_Style);
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
+            return;
+        }
+        if(theFunction.contentEquals("antiinvisible")){
+            if(theSetting.contentEquals("showfel")){
+                if(args.length < 3){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs AntiInvisible ShowFel <状态(true/false)>");
+                    return;
+                }
+                AntiInvisible.ShowFel = Boolean.parseBoolean(args[2].toLowerCase());
+                DiamondS.SendMessage("§a设置§l ShowFel §r§a为：§r"+ AntiInvisible.ShowFel);
+                AntiInvisible.SaveConfig();
+                return;
+            }
+            if(theSetting.contentEquals("showplayer")){
+                if(args.length < 3){
+                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs AntiInvisible ShowPlayer <状态(true/false)>");
+                    return;
+                }
+                AntiInvisible.ShowPlayer = Boolean.parseBoolean(args[2].toLowerCase());
+                DiamondS.SendMessage("§a设置§l ShowPlayer §r§a为：§r"+ AntiInvisible.ShowPlayer);
+                AntiInvisible.SaveConfig();
+                return;
+            }
+
+            Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText(
+                    "§bShowFel - 是否显示隐藏的Fel(true/false)\n" +
+                            "§bShowPlayer - 是否显示隐藏的玩家(true/false)\n\n" +
+                            "§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
             Message.setChatStyle(Message_Style);
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
             return;

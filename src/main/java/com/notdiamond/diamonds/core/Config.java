@@ -1,6 +1,8 @@
 package com.notdiamond.diamonds.core;
 
 
+import com.notdiamond.diamonds.functions.Dungeon.AntiInvisible;
+import com.notdiamond.diamonds.functions.Dungeon.GhostBlock;
 import com.notdiamond.diamonds.functions.Macro.PlayerFinder.PlayerFinder;
 import com.notdiamond.diamonds.functions.Macro.WormCleaner;
 import com.notdiamond.diamonds.functions.Player.AngleLock;
@@ -57,7 +59,8 @@ public class Config
                 AngleLock.LockYaw = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.LockYaw","true"));
                 WormCleaner.LoadConfig();
                 PlayerFinder.LoadConfig();
-
+                GhostBlock.LoadConfig();
+                AntiInvisible.LoadConfig();
             }
     }
 
@@ -80,6 +83,8 @@ public class Config
                 Config.prop.setProperty("AngleLock.LockPitch", String.valueOf(AngleLock.LockPitch));
                 WormCleaner.SaveConfig();
                 PlayerFinder.SaveConfig();
+                GhostBlock.SaveConfig();
+                AntiInvisible.SaveConfig();
                 FileOutputStream fos = new FileOutputStream(Config.fileName);
                 Config.prop.store(fos, null);
             } catch (IOException e) {

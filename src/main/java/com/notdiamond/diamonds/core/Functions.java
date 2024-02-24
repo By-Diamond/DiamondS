@@ -40,7 +40,14 @@ public class Functions extends Component {
             Functions.SetStatus("hidearmor",false);
             DiamondS.SendMessage("§c检测到打开§lHideArmor§r§c，已自动关闭 §lHidePlayers");
         }
-
+        if(theFunction.contentEquals("antiinvisible") && Functions.GetStatus("hideplayers")){
+            Functions.SetStatus("hideplayers",false);
+            DiamondS.SendMessage("§c检测到打开§lAntiInvisible§r§c，已自动关闭 §lHidePlayers");
+        }
+        if(theFunction.contentEquals("hideplayers") && Functions.GetStatus("antiinvisible")){
+            Functions.SetStatus("antiinvisible",false);
+            DiamondS.SendMessage("§c检测到打开§lHidePlayers§r§c，已自动关闭 §lAntiInvisible");
+        }
         Functions.SetStatus(theFunction, !Functions.GetStatus(theFunction));
 
         //附加↓
