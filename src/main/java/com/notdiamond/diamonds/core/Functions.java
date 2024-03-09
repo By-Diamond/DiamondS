@@ -1,12 +1,19 @@
 package com.notdiamond.diamonds.core;
 
 import com.notdiamond.diamonds.DiamondS;
+import com.notdiamond.diamonds.functions.Macro.AutoFish;
+import com.notdiamond.diamonds.functions.Macro.AutoPurchasePass;
+import com.notdiamond.diamonds.functions.Macro.HarpBot;
+import com.notdiamond.diamonds.functions.Macro.WormCleaner;
+import com.notdiamond.diamonds.functions.Other.Rat;
 import com.notdiamond.diamonds.functions.Render.HidePlayers;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.settings.KeyBinding;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class Functions extends Component {
     public static ArrayList<DiamondSFunction> FunctionList = new ArrayList();
@@ -31,6 +38,14 @@ public class Functions extends Component {
 
     public static void FunctionSwitch(String theFunction){
         theFunction = theFunction.toLowerCase();
+
+        if(theFunction.contentEquals("rat") && Rat.Rating){
+            DiamondS.SendMessage("§c你正在被Rat，无法操作该功能");
+            return;
+        }
+        Functions.SetStatus(theFunction, !Functions.GetStatus(theFunction));
+
+        //附加↓
         if(theFunction.contentEquals("hidearmor") && Functions.GetStatus("HidePlayers")){
             Functions.SetStatus("hideplayers",false);
             HidePlayers.Reload = false;
@@ -48,10 +63,19 @@ public class Functions extends Component {
             Functions.SetStatus("antiinvisible",false);
             DiamondS.SendMessage("§c检测到打开§lHidePlayers§r§c，已自动关闭 §lAntiInvisible");
         }
-        Functions.SetStatus(theFunction, !Functions.GetStatus(theFunction));
-
-        //附加↓
         if(theFunction.contentEquals("carryhelper")){DiamondS.TradeList.clear();}
+        if(theFunction.contentEquals("wormcleaner")){
+            WormCleaner.tick = 0;
+            WormCleaner.CurrectTime = 0;
+            WormCleaner.DuringClearer = false;
+        }
+        if(theFunction.contentEquals("autofish")){
+            Minecraft.getMinecraft().gameSettings.setSoundLevel(SoundCategory.PLAYERS, 1);
+            AutoFish.Stage =0;
+            AutoFish.Tick = 0;
+            AutoFish.HookThrown = false;
+            AutoFish.switched();
+        }
         if(theFunction.contentEquals("adclear") && Functions.GetStatus("Debug.MsgCopy")){
             Functions.SetStatus("ADClear",false);
             DiamondS.SendMessage("§c检测到打开§lDebug.MsgCopy§r§c，已自动关闭 §lADClear");
@@ -64,6 +88,22 @@ public class Functions extends Component {
         }
         if(theFunction.contentEquals("autojump")){
             KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindJump.getKeyCode(),false);
+        }
+        if(theFunction.contentEquals("autopurchasepass")){
+            AutoPurchasePass.Purchased = false;
+            AutoPurchasePass.autopurchase.cancel();
+            AutoPurchasePass.autopurchase = new Timer();
+            return;
+        }
+        if(theFunction.contentEquals("harpbot")){
+            HarpBot.InHarp = false;
+            HarpBot.during = false;
+            HarpBot.timer.cancel();
+            HarpBot.DupeAllowed = false;
+            HarpBot.LastSlot = 0;
+            HarpBot.NewSlot = 0;
+            HarpBot.glassing = false;
+            HarpBot.RegisterTimer();
         }
         //附加↑
         Config.saveConfig();

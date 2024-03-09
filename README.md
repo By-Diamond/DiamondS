@@ -25,11 +25,17 @@
 - **PlayerFinder**  查看附近的玩家列表
 - **GhostBlock**  创建鬼方块
 - **AntiInvisible**  显示隐藏的生物(Fel/Player)
+- **AutoFish**  自动钓鱼
+- **HideFallingBlock**  隐藏掉落的方块
+- **AutoPurchasePass**  自动购买Crystal Hollows通行证
+- **HarpBot** 自动演奏
 
 # 指令
 - **/menu** 打开菜单
 - **/fc** <功能名称> 切换功能状态
 - **/fs** <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ... 设置功能
+- /fs reload 重新加载配置项
+- /fs update 检查更新
 - **/wb** <数量(1~18)> 使用 **WardrobeHelper** 快速换装
 
 # 默认按键
@@ -40,7 +46,8 @@
 - **→** HUD 右移
 - **右Shift(RShift)** HUD 选中功能后进入功能设置
 - **G** 创建一个Ghost Block
-
+- **I** 开启/关闭**Sprint(强制疾跑)**
+- 
 # 附言
 - Mod 功能较少且可能出现Bug
 - 请在加群后反馈，感谢支持

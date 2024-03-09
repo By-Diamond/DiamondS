@@ -2,8 +2,11 @@ package com.notdiamond.diamonds.functions.Macro;
 
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.functions.Chat.ChatClass;
+import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -11,23 +14,25 @@ import static com.notdiamond.diamonds.DiamondS.mc;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class WormCleaner {
     public static boolean DuringClearer = false;
-    static int RodSlot = 0;
-    static Float[] PlayerRotation = new Float[2];
-    static int Quantity = 0;
-    static int CurrectTime = 0;
-    static int tick = 0;
+    public static int RodSlot = 0;
+    public static Float[] PlayerRotation = new Float[2];
+    public static int Quantity = 0;
+    public static int CurrectTime = 0;
+    public static int tick = 0;
 
     public static int ToolSlot = 0;
     public static int[] TextPosition = new int[2];
     public static Float[] TargetRotation = new Float[2];
-    public static int Times = 4;
-    public static int MaxQuantity = 45;
+    public static int Times = 3;
+    public static int MaxQuantity = 27;
     public static int Delay = 2500;
 
+    public static int WormCounter = 0;
 
     public static void LoadConfig(){
         ToolSlot = Integer.parseInt(Config.prop.getProperty("WormCleaner.ToolSlot","0"));
@@ -35,8 +40,8 @@ public class WormCleaner {
         TextPosition[1] = Integer.parseInt(Config.prop.getProperty("WormCleaner.TextY","10"));
         TargetRotation[0] = Float.valueOf(Config.prop.getProperty("WormCleaner.TargetYaw","0"));
         TargetRotation[1] = Float.valueOf(Config.prop.getProperty("WormCleaner.TargetPitch","0"));
-        Times = Integer.parseInt(Config.prop.getProperty("WormCleaner.Times","4"));
-        MaxQuantity = Integer.parseInt(Config.prop.getProperty("WormCleaner.MaxQuantity","45"));
+        Times = Integer.parseInt(Config.prop.getProperty("WormCleaner.Times","3"));
+        MaxQuantity = Integer.parseInt(Config.prop.getProperty("WormCleaner.MaxQuantity","27"));
         Delay = Integer.parseInt(Config.prop.getProperty("WormCleaner.Delay","2500"));
     }
 
@@ -53,7 +58,20 @@ public class WormCleaner {
          Config.prop.store(fos, null);
     }
 
-
+    @SubscribeEvent
+    public void WormCounter(ClientChatReceivedEvent event) {
+        String msg = event.message.getUnformattedText();
+        msg = DText.RemoveColor(msg);
+        if(ChatClass.CheckMessage(msg, event)){
+            return;
+        }
+        if(msg.startsWith("It's a Double Hook")){
+            WormCounter = WormCounter +2;
+        }
+        if(msg.startsWith("A") && msg.contains("Worm surfaces from the depths")){
+            WormCounter++;
+        }
+    }
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         if(Functions.GetStatus("WormCleaner")){
@@ -116,7 +134,16 @@ public class WormCleaner {
             if(Functions.GetStatus("WormCleaner")&& mc.fontRendererObj != null && mc.theWorld != null){
                 mc.fontRendererObj.drawStringWithShadow("§b「 §lDiamondS §r§bWorm Fishing Info 」", TextPosition[0], TextPosition[1], 0xFFFFFF);
                 mc.fontRendererObj.drawStringWithShadow("§6附近的 Worm 数量: §a"+ Quantity + "§6/§c"+MaxQuantity, TextPosition[0], TextPosition[1]+10, 0xFFFFFF);
-                mc.fontRendererObj.drawStringWithShadow("§6当前世界时间: §aDay "+ (int) Math.floor((double) mc.theWorld.getWorldTime() /24000), TextPosition[0], TextPosition[1]+20, 0xFFFFFF);
+
+                double day = (double) mc.theWorld.getWorldTime() / 24000;
+                DecimalFormat df = new DecimalFormat(".00");
+                String dayS = df.format(day);
+                if(mc.theWorld.getWorldTime() < 24000){
+                    dayS = "0"+dayS;
+                }
+                mc.fontRendererObj.drawStringWithShadow("§6当前世界时间: §aDay "+ dayS, TextPosition[0], TextPosition[1]+20, 0xFFFFFF);
+                mc.fontRendererObj.drawStringWithShadow("§6总计钓到的 Worm 数量: §a"+ WormCounter, TextPosition[0], TextPosition[1]+30, 0xFFFFFF);
+
             }
         }
     }

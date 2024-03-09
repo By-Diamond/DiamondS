@@ -2,6 +2,7 @@ package com.notdiamond.diamonds.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Random;
 
 public class DText {
     public static String getSubString(String text, String left, String right) {
@@ -83,5 +84,10 @@ public class DText {
         Pattern pattern = Pattern.compile("(?i)(" + Content + ")", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(Msg);
         return matcher.replaceAll(Replacement);
+    }
+
+    public static int randomnumber(int min,int max){
+        Random random = new Random();
+        return min + random.nextInt(max - min + 1);
     }
 }

@@ -1,8 +1,10 @@
 package com.notdiamond.diamonds.core;
 
 
-import com.notdiamond.diamonds.functions.Dungeon.AntiInvisible;
+import com.notdiamond.diamonds.functions.Macro.HarpBot;
+import com.notdiamond.diamonds.functions.Render.AntiInvisible;
 import com.notdiamond.diamonds.functions.Dungeon.GhostBlock;
+import com.notdiamond.diamonds.functions.Macro.AutoFish;
 import com.notdiamond.diamonds.functions.Macro.PlayerFinder.PlayerFinder;
 import com.notdiamond.diamonds.functions.Macro.WormCleaner;
 import com.notdiamond.diamonds.functions.Player.AngleLock;
@@ -36,7 +38,7 @@ public class Config
             }else{
                 for(int i = 0;i<=Functions.FunctionList.size()-1;i++){
                     String Name = Functions.FunctionList.get(i).Name;
-                    if(Name.contentEquals("HidePlayers") || Name.contentEquals("HideArmor") || Name.contentEquals("AngleLock")){
+                    if(Name.contentEquals("HarpBot") || Name.contentEquals("Rat") || Name.contentEquals("AutoFish") ||Name.contentEquals("HidePlayers") || Name.contentEquals("HideArmor") || Name.contentEquals("AngleLock")){
                         Functions.SetStatus(Name,false);
                     }else{
                         String Status = Config.prop.getProperty("Functions."+Name);
@@ -61,6 +63,8 @@ public class Config
                 PlayerFinder.LoadConfig();
                 GhostBlock.LoadConfig();
                 AntiInvisible.LoadConfig();
+                AutoFish.LoadConfig();
+                HarpBot.LoadConfig();
             }
     }
 
@@ -85,6 +89,8 @@ public class Config
                 PlayerFinder.SaveConfig();
                 GhostBlock.SaveConfig();
                 AntiInvisible.SaveConfig();
+                AutoFish.SaveConfig();
+                HarpBot.SaveConfig();
                 FileOutputStream fos = new FileOutputStream(Config.fileName);
                 Config.prop.store(fos, null);
             } catch (IOException e) {

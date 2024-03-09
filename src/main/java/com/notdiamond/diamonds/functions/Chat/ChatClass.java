@@ -3,7 +3,6 @@ package com.notdiamond.diamonds.functions.Chat;
 import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.utils.DText;
-import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
@@ -15,6 +14,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.notdiamond.diamonds.DiamondS.mc;
 
 public class ChatClass {
 
@@ -30,28 +31,9 @@ public class ChatClass {
         String player;
         IChatComponent ALL;
 
-        if(DiamondS.PLAYERNAME.replaceAll(" ", "").contentEquals("")){
-            if(Minecraft.getMinecraft().thePlayer != null){
-                DiamondS.PLAYERNAME = Minecraft.getMinecraft().thePlayer.getName();
-            }
-        }
-        if(msg.contains("❤") && msg.contains("✎")){return;}
-        if(msg.startsWith("公会") ||  msg.startsWith("Guild")){
-            if(msg.contains("NotDiamond") && msg.toLowerCase().contains("diamondstest")){
-                Minecraft.getMinecraft().thePlayer.sendChatMessage("/msg NotDiamond DiamondS [Version " +DiamondS.VERSION+"]");
-                event.setCanceled(true);
-            }
+        if(CheckMessage(msg, event)){
             return;
         }
-        if(msg.startsWith("To ")){
-            if(msg.contains("NotDiamond") && msg.contains("DiamondS [Version ")){
-                event.setCanceled(true);
-            }
-            return;
-        }
-        if(msg.startsWith("[Auction] ") || msg.startsWith("From ") || msg.startsWith("[SkyBlock]") || msg.startsWith("[NPC]") || msg.startsWith("[Bazaar]") || msg.startsWith("组队") || msg.startsWith("Co-op")){return;}
-        if(msg.startsWith("Party") && !(msg.startsWith("Party Finder > "))){return;}
-
 
         if(Functions.GetStatus("WardrobeHelper")){
             if (msg.contains("You can't use this menu while in combat!") && DiamondS.tempint > 0){
@@ -63,12 +45,12 @@ public class ChatClass {
         }
         if(Functions.GetStatus("CarryHelper")) {
             if (msg.contains("Party Finder > ") && msg.contains(" joined the dungeon group!")) {
-                Minecraft.getMinecraft().thePlayer.playSound("random.levelup", 1, 1);
+                mc.thePlayer.playSound("random.levelup", 1, 1);
                 if (CarryHelper_IsAutoWarp) {
                     TimerTask task1 = new TimerTask() {
                         @Override
                         public void run() {
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/p warp");
+                            mc.thePlayer.sendChatMessage("/p warp");
                         }
                     };
                     Timer timer1 = new Timer();
@@ -78,7 +60,7 @@ public class ChatClass {
                     TimerTask task2 = new TimerTask() {
                         @Override
                         public void run() {
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc " + CarryHelper_AutoMessage);
+                            mc.thePlayer.sendChatMessage("/pc " + CarryHelper_AutoMessage);
                         }
                     };
                     Timer timer2 = new Timer();
@@ -130,18 +112,18 @@ public class ChatClass {
                         Trade_Style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/p list"));
                         ALL.setChatStyle(Trade_Style);
                         event.setCanceled(true);
-                        Minecraft.getMinecraft().thePlayer.addChatMessage(event.message.createCopy());
-                        Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                        mc.thePlayer.addChatMessage(event.message.createCopy());
+                        mc.thePlayer.addChatMessage(ALL);
                     } else {
                         event.setCanceled(true);
                         event.setCanceled(true);
-                        Minecraft.getMinecraft().thePlayer.addChatMessage(event.message.createCopy());
+                        mc.thePlayer.addChatMessage(event.message.createCopy());
                         ALL = new ChatComponentText("§b§lDiamondS > §a§l所有人均已完成 Trade，可以进入 Dungeon");
                         ChatStyle Trade_Style = new ChatStyle();
                         Trade_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(" §a" + ALLTraded + "\n§b点击清空 Trade List ")));
                         Trade_Style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/fs carryhelper clear"));
                         ALL.setChatStyle(Trade_Style);
-                        Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                        mc.thePlayer.addChatMessage(ALL);
                     }
                     return;
                 }
@@ -150,7 +132,7 @@ public class ChatClass {
         if(msg.toLowerCase().contains(DiamondS.PLAYERNAME.toLowerCase())){
             if(Functions.GetStatus("NickName")){
                 event.setCanceled(true);
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(DText.Replace(event.message.getUnformattedText(), DiamondS.PLAYERNAME, NickName_Name)));
+                mc.thePlayer.addChatMessage(new ChatComponentText(DText.Replace(event.message.getUnformattedText(), DiamondS.PLAYERNAME, NickName_Name)));
             }
             return;
         }
@@ -286,7 +268,7 @@ public class ChatClass {
                     player = DText.getSubString(msg,"Party Finder > "," joined the dungeon group!");
                     player.replaceAll(" ","");
 
-                    if(player.contentEquals(Minecraft.getMinecraft().thePlayer.getName()) || player.toLowerCase().contentEquals("you")){
+                    if(player.contentEquals(mc.thePlayer.getName()) || player.toLowerCase().contentEquals("you")){
                         return;
                     }
 
@@ -307,9 +289,9 @@ public class ChatClass {
                     ALL.appendSibling(Blank);
                     ALL.appendSibling(Ignore);
                     event.setCanceled(true);
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                    mc.thePlayer.addChatMessage(ALL);
                     if(Functions.GetStatus("CarryHelper")){
-                        Minecraft.getMinecraft().thePlayer.playSound("random.levelup",1,1);
+                        mc.thePlayer.playSound("random.levelup",1,1);
                     }
                     return;
                 }
@@ -321,7 +303,7 @@ public class ChatClass {
                     }
                     player.replace(" ","");
 
-                    if(player.contentEquals(Minecraft.getMinecraft().thePlayer.getName())){
+                    if(player.contentEquals(mc.thePlayer.getName())){
                         return;
                     }
 
@@ -337,18 +319,18 @@ public class ChatClass {
                     ALL.appendSibling(Blank);
                     ALL.appendSibling(Ignore);
                     event.setCanceled(true);
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                    mc.thePlayer.addChatMessage(ALL);
                     return;
                 }
                 if(msg.contains("离开了组队。")){
-                    if (msg.contains("] ") == true){
+                    if (msg.contains("] ")){
                         player = DText.getSubString(msg,"] ","离开了组队。");
                     }else{
                         player = DText.getSubString(msg,"","离开了组队。");
                     }
                     player.replace(" ","");
 
-                    if(player.contentEquals(Minecraft.getMinecraft().thePlayer.getName()) || player.contentEquals("你")){
+                    if(player.contentEquals(mc.thePlayer.getName()) || player.contentEquals("你")){
                         return;
                     }
 
@@ -364,7 +346,7 @@ public class ChatClass {
                     ALL.appendSibling(Blank);
                     ALL.appendSibling(Ignore);
                     event.setCanceled(true);
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                    mc.thePlayer.addChatMessage(ALL);
                     return;
                 }
                 if(msg.contains("Added ") && msg.contains(" to your ignore list.")){
@@ -379,7 +361,7 @@ public class ChatClass {
                     ALL.appendSibling(Blank);
                     ALL.appendSibling(RmIgnore);
                     event.setCanceled(true);
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                    mc.thePlayer.addChatMessage(ALL);
 
                     return;
                 }
@@ -395,7 +377,7 @@ public class ChatClass {
                     ALL.appendSibling(Blank);
                     ALL.appendSibling(RmIgnore);
                     event.setCanceled(true);
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(ALL);
+                    mc.thePlayer.addChatMessage(ALL);
 
                     return;
                 }
@@ -408,5 +390,30 @@ public class ChatClass {
                 event.setCanceled(true);
             }
         }
+    }
+
+    public static boolean CheckMessage(String msg ,ClientChatReceivedEvent event){
+        if(DiamondS.PLAYERNAME.replaceAll(" ", "").contentEquals("")){
+            if(mc.thePlayer != null){
+                DiamondS.PLAYERNAME = mc.thePlayer.getName();
+            }
+        }
+        if(msg.contains("❤") && msg.contains("✎")){return true;}
+        if(msg.startsWith("公会") ||  msg.startsWith("Guild")){
+            if(msg.contains("NotDiamond") && msg.toLowerCase().contains("diamondstest")){
+                mc.thePlayer.sendChatMessage("/msg NotDiamond DiamondS [Version " +DiamondS.VERSION+"]");
+                event.setCanceled(true);
+            }
+            return true;
+        }
+        if(msg.startsWith("To ")){
+            if(msg.contains("NotDiamond") && msg.contains("DiamondS [Version ")){
+                event.setCanceled(true);
+            }
+            return true;
+        }
+        if(msg.startsWith("[Harp]") || msg.startsWith("[Auction]") || msg.startsWith("From ") || msg.startsWith("[SkyBlock]") || msg.startsWith("[NPC]") || msg.startsWith("[Bazaar]") || msg.startsWith("组队") || msg.startsWith("Co-op")){return true;}
+        if(msg.startsWith("Party") && !(msg.startsWith("Party Finder > "))){return true;}
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-package com.notdiamond.diamonds.functions.Dungeon;
+package com.notdiamond.diamonds.functions.Render;
 
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;

@@ -38,6 +38,7 @@ minecraft {
 }
 
 dependencies {
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13' // 使用您需要的版本
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"

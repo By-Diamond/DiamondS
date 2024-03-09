@@ -16,6 +16,15 @@ public class DPlayer implements Comparable<DPlayer>{
 
     @Override
     public int compareTo(DPlayer o) {
-        return (int) (this.Distance - o.Distance);
+        if(this.Distance.compareTo(o.Distance) == -1){
+            return -1;
+        }
+        if(this.Distance.compareTo(o.Distance) == 0){
+            return 0;
+        }
+        if(this.Distance.compareTo(o.Distance) == 1){
+            return 1;
+        }
+        return 0;
     }
 }
