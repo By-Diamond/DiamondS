@@ -16,6 +16,7 @@ public class AutoPurchasePass {
     public static Boolean Purchased = false;
     public static Timer autopurchase = new Timer();
 
+
     @SubscribeEvent
     public void ChatFunctions(ClientChatReceivedEvent event) {
         if(Functions.GetStatus("AutoPurchasePass")){

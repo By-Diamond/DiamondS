@@ -86,8 +86,38 @@ public class DText {
         return matcher.replaceAll(Replacement);
     }
 
-    public static int randomnumber(int min,int max){
+    public static int GetRandomNumber(int min,int max){
         Random random = new Random();
         return min + random.nextInt(max - min + 1);
+    }
+
+    public static String TimeFormat(int second){
+        int h,m,s = 0;
+        s=second;
+        m = (int) Math.floor(s/60);
+        h =(int) Math.floor(m/60);
+        s = s-60*m;
+        m = m-60*h;
+        String hs,ms,ss = "";
+        if(s>0){
+            ss= s +"s";
+        }else{
+            ss = "";
+        }
+        if(m>0){
+            ms= m +"m";
+        }else{
+            ms = "";
+        }
+        if(h>0){
+            hs= h +"h";
+        }else{
+            hs = "";
+        }
+        String All = hs+ms+ss;
+        if(All.contentEquals("")){
+            return "0s";
+        }
+        return hs+ms+ss;
     }
 }

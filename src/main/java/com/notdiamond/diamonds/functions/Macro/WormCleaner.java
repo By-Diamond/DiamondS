@@ -2,6 +2,7 @@ package com.notdiamond.diamonds.functions.Macro;
 
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.SmoothRotation.SmoothRotation;
 import com.notdiamond.diamonds.functions.Chat.ChatClass;
 import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.entity.monster.EntitySilverfish;
@@ -27,10 +28,13 @@ public class WormCleaner {
 
     public static int ToolSlot = 0;
     public static int[] TextPosition = new int[2];
-    public static Float[] TargetRotation = new Float[2];
+    public static Float[] TargetRotation = {0f,0f};
     public static int Times = 3;
     public static int MaxQuantity = 27;
     public static int Delay = 2500;
+
+    public static int TimeRecordTime = 0;
+    public static int TimeRecordTick = 0;
 
     public static int WormCounter = 0;
 
@@ -38,8 +42,8 @@ public class WormCleaner {
         ToolSlot = Integer.parseInt(Config.prop.getProperty("WormCleaner.ToolSlot","0"));
         TextPosition[0] = Integer.parseInt(Config.prop.getProperty("WormCleaner.TextX","100"));
         TextPosition[1] = Integer.parseInt(Config.prop.getProperty("WormCleaner.TextY","10"));
-        TargetRotation[0] = Float.valueOf(Config.prop.getProperty("WormCleaner.TargetYaw","0"));
-        TargetRotation[1] = Float.valueOf(Config.prop.getProperty("WormCleaner.TargetPitch","0"));
+        TargetRotation[0] = Float.parseFloat(Config.prop.getProperty("WormCleaner.TargetYaw","0"));
+        TargetRotation[1] = Float.parseFloat(Config.prop.getProperty("WormCleaner.TargetPitch","0"));
         Times = Integer.parseInt(Config.prop.getProperty("WormCleaner.Times","3"));
         MaxQuantity = Integer.parseInt(Config.prop.getProperty("WormCleaner.MaxQuantity","27"));
         Delay = Integer.parseInt(Config.prop.getProperty("WormCleaner.Delay","2500"));
@@ -67,14 +71,27 @@ public class WormCleaner {
         }
         if(msg.startsWith("It's a Double Hook")){
             WormCounter = WormCounter +2;
+            TimeRecordTick = 0;
+            TimeRecordTime = 0;
+            return;
         }
         if(msg.startsWith("A") && msg.contains("Worm surfaces from the depths")){
             WormCounter++;
+            TimeRecordTick = 0;
+            TimeRecordTime = 0;
+            return;
         }
     }
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         if(Functions.GetStatus("WormCleaner")){
+            if(WormCounter>0){
+                TimeRecordTick ++;
+            }
+            if(TimeRecordTick >= 40){
+                TimeRecordTick = 0;
+                TimeRecordTime ++;
+            }
             if(mc.theWorld != null && mc.thePlayer != null){
                 double x = mc.thePlayer.posX;
                 double y = mc.thePlayer.posY;
@@ -97,15 +114,13 @@ public class WormCleaner {
                         if(tick==1){
                             CurrectTime++;
                             mc.thePlayer.inventory.currentItem = ToolSlot;
-                            mc.thePlayer.rotationYaw = TargetRotation[0];
-                            mc.thePlayer.rotationPitch = TargetRotation[1];
+                            SmoothRotation.smoothLookWithout(TargetRotation[0],TargetRotation[1],6);
                             if(Quantity <= 0){
                                 DuringClearer = false;
                                 tick=0;
                                 CurrectTime = 0;
                                 mc.thePlayer.inventory.currentItem = RodSlot;
-                                mc.thePlayer.rotationYaw = PlayerRotation[0];
-                                mc.thePlayer.rotationPitch = PlayerRotation[1];
+                                SmoothRotation.smoothLookWithout(PlayerRotation[0],PlayerRotation[1],6);
                             }
                         }
                         if(tick==40){
@@ -121,8 +136,7 @@ public class WormCleaner {
                         tick=0;
                         CurrectTime = 0;
                         mc.thePlayer.inventory.currentItem = RodSlot;
-                        mc.thePlayer.rotationYaw = PlayerRotation[0];
-                        mc.thePlayer.rotationPitch = PlayerRotation[1];
+                        SmoothRotation.smoothLookWithout(PlayerRotation[0],PlayerRotation[1],6);
                     }
                 }
             }
@@ -143,6 +157,7 @@ public class WormCleaner {
                 }
                 mc.fontRendererObj.drawStringWithShadow("§6当前世界时间: §aDay "+ dayS, TextPosition[0], TextPosition[1]+20, 0xFFFFFF);
                 mc.fontRendererObj.drawStringWithShadow("§6总计钓到的 Worm 数量: §a"+ WormCounter, TextPosition[0], TextPosition[1]+30, 0xFFFFFF);
+                mc.fontRendererObj.drawStringWithShadow("§6上次钓到Worm: §b"+ DText.TimeFormat(TimeRecordTime) +"前", TextPosition[0], TextPosition[1]+40, 0xFFFFFF);
 
             }
         }

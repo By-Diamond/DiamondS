@@ -29,6 +29,7 @@
 - **HideFallingBlock**  隐藏掉落的方块
 - **AutoPurchasePass**  自动购买Crystal Hollows通行证
 - **HarpBot** 自动演奏
+- **ChannelChanger** 在聊天栏添加按钮快速切换频道
 
 # 指令
 - **/menu** 打开菜单
@@ -47,7 +48,7 @@
 - **右Shift(RShift)** HUD 选中功能后进入功能设置
 - **G** 创建一个Ghost Block
 - **I** 开启/关闭**Sprint(强制疾跑)**
-- 
+
 # 附言
 - Mod 功能较少且可能出现Bug
 - 请在加群后反馈，感谢支持

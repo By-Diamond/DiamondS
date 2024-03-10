@@ -3,7 +3,8 @@ package com.notdiamond.diamonds.commands;
 import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
-import com.notdiamond.diamonds.core.HUD;
+import com.notdiamond.diamonds.core.SmoothRotation.SmoothRotation;
+import com.notdiamond.diamonds.functions.Render.HUD;
 import com.notdiamond.diamonds.functions.Macro.HarpBot;
 import com.notdiamond.diamonds.functions.Render.AntiInvisible;
 import com.notdiamond.diamonds.functions.Dungeon.GhostBlock;
@@ -338,21 +339,23 @@ public class FunctionSettings extends CommandBase {
                         WormCleaner.RodSlot = mc.thePlayer.inventory.currentItem;
                         WormCleaner.tick=0;
                         WormCleaner.CurrectTime = 0;
-                        mc.thePlayer.rotationYaw = WormCleaner.TargetRotation[0];
-                        mc.thePlayer.rotationPitch = WormCleaner.TargetRotation[1];
-                        if(WormCleaner.Quantity > 0){
-                            WormCleaner.DuringClearer = true;
-                            DiamondS.SendMessage("§a开始测试§l WormCleaner");
-                        }else{
-                            DiamondS.SendMessage("§c附近没有可清理的Worm");
-                        }
+                        SmoothRotation.smoothLook(WormCleaner.TargetRotation[0],WormCleaner.TargetRotation[1],6,new Runnable() {
+                            @Override
+                            public void run() {
+                                if(WormCleaner.Quantity > 0){
+                                    WormCleaner.DuringClearer = true;
+                                    DiamondS.SendMessage("§a开始测试§l WormCleaner");
+                                }else{
+                                    DiamondS.SendMessage("§c附近没有可清理的Worm");
+                                }
+                            }
+                        });
                     }else{
                         WormCleaner.DuringClearer = false;
                         WormCleaner.tick=0;
                         WormCleaner.CurrectTime = 0;
                         mc.thePlayer.inventory.currentItem = WormCleaner.RodSlot;
-                        mc.thePlayer.rotationYaw = WormCleaner.PlayerRotation[0];
-                        mc.thePlayer.rotationPitch = WormCleaner.PlayerRotation[1];
+                        SmoothRotation.smoothLookWithout(WormCleaner.PlayerRotation[0],WormCleaner.PlayerRotation[1],6);
                         DiamondS.SendMessage("§c已结束当前§l WormCleaner §r§c进程");
                     }
                 }
@@ -592,20 +595,20 @@ public class FunctionSettings extends CommandBase {
                 AutoFish.SaveConfig();
                 return;
             }
-            if(theSetting.contentEquals("setmovedu")){
-                if(args.length < 3){
-                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs AutoFish SetMoveDu <持续时间(单位/ms)>");
-                    return;
-                }
-                if(Integer.parseInt(args[2]) < 10){
-                    DiamondS.SendMessage("§c指令错误，持续时间至少为 §l10ms");
-                    return;
-                }
-                AutoFish.AutoMoveDU = Integer.parseInt(args[2]);
-                DiamondS.SendMessage("§a设置§l AutoMoveDuration §r§a为 §b" + AutoFish.AutoMoveDU+ "§r§ams");
-                AutoFish.SaveConfig();
-                return;
-            }
+//            if(theSetting.contentEquals("setmovedu")){
+//                if(args.length < 3){
+//                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs AutoFish SetMoveDu <持续时间(单位/ms)>");
+//                    return;
+//                }
+//                if(Integer.parseInt(args[2]) < 10){
+//                    DiamondS.SendMessage("§c指令错误，持续时间至少为 §l10ms");
+//                    return;
+//                }
+//                AutoFish.AutoMoveDU = Integer.parseInt(args[2]);
+//                DiamondS.SendMessage("§a设置§l AutoMoveDuration §r§a为 §b" + AutoFish.AutoMoveDU+ "§r§ams");
+//                AutoFish.SaveConfig();
+//                return;
+//            }
             if(theSetting.contentEquals("setmovetime")){
                 if(args.length < 3){
                     DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs AutoFish SetMoveTime <周期时间(单位/ms)>");
@@ -634,16 +637,16 @@ public class FunctionSettings extends CommandBase {
                 AutoFish.switched();
                 return;
             }
-            if(theSetting.contentEquals("amlronly")){
-                if(args.length < 3){
-                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs AutoFish AMLROnly <状态(true/false)>");
-                    return;
-                }
-                AutoFish.AutoMoveLROnly = Boolean.parseBoolean(args[2]);
-                DiamondS.SendMessage("§a设置§l AutoMoveRightLeftOnly §r§a为 §b" + AutoFish.AutoMoveLROnly);
-                AutoFish.SaveConfig();
-                return;
-            }
+//            if(theSetting.contentEquals("amlronly")){
+//                if(args.length < 3){
+//                    DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs AutoFish AMLROnly <状态(true/false)>");
+//                    return;
+//                }
+//                AutoFish.AutoMoveLROnly = Boolean.parseBoolean(args[2]);
+//                DiamondS.SendMessage("§a设置§l AutoMoveRightLeftOnly §r§a为 §b" + AutoFish.AutoMoveLROnly);
+//                AutoFish.SaveConfig();
+//                return;
+//            }
             if(theSetting.contentEquals("alwayssneak")){
                 if(args.length < 3){
                     DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs AutoFish AlwaysSneak <状态(true/false)>");
@@ -701,9 +704,9 @@ public class FunctionSettings extends CommandBase {
                             "§bPullDelay <延迟(单位/ms)> §r- 设置收起鱼竿延迟时间 §9§l" +AutoFish.PickDelay+"\n"+
                             "§8----------------------------------------\n"+
                             "§bAutoMove <状态(true/false)> §r- 设置是否自动移动 §9§l" +AutoFish.AutoMove+"\n"+
-                            "§bSetMoveDu <持续时间(单位/ms)> §r- 设置自动移动(行走)持续时间 §9§l" +AutoFish.AutoMoveDU+"\n"+
+//                            "§bSetMoveDu <持续时间(单位/ms)> §r- 设置自动移动(行走)持续时间 §9§l" +AutoFish.AutoMoveDU+"\n"+
                             "§bSetMoveTime <周期时间(单位/ms)> §r- 设置自动移动周期时间 §9§l" +AutoFish.AntiMacroTime+"\n"+
-                            "§bAMLROnly <状态(true/false)> §r- 设置自动移动(行走)是否只左右行走 §9§l" +AutoFish.AutoMoveLROnly+"\n"+
+//                            "§bAMLROnly <状态(true/false)> §r- 设置自动移动(行走)是否只左右行走 §9§l" +AutoFish.AutoMoveLROnly+"\n"+
                             "§8----------------------------------------\n"+
                             "§bAlwaysSneak <状态(true/false)> §r- 设置是否强制潜行 §9§l" +AutoFish.AlwaysSneak+"\n"+
                             "§bAlwaysW <状态(true/false)> §r- 设置是否强制前进 §9§l" +AutoFish.AlwaysW+ "\n\n" +
@@ -718,11 +721,11 @@ public class FunctionSettings extends CommandBase {
                     DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs HarpBot Delay <数值(单位/ms)>");
                     return;
                 }
-                if(Integer.valueOf(args[2]) <=0){
+                if(Integer.parseInt(args[2]) <=0){
                     DiamondS.SendMessage("§c指令错误，正确的用法为：§l/fs HarpBot Delay <数值(单位/ms)>");
                     return;
                 }
-                HarpBot.delay = Integer.valueOf(args[2]);
+                HarpBot.delay = Integer.parseInt(args[2]);
                 DiamondS.SendMessage("§a设置§l Delay §r§a为：§r§b"+ HarpBot.delay +"§ams");
                 HarpBot.SaveConfig();
                 return;

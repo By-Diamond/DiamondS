@@ -6,7 +6,9 @@ import com.notdiamond.diamonds.commands.FunctionSwitch;
 import com.notdiamond.diamonds.commands.WardrobeHelperCommand;
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
-import com.notdiamond.diamonds.core.HUD;
+import com.notdiamond.diamonds.core.SmoothRotation.SmoothRotation;
+import com.notdiamond.diamonds.functions.Chat.ChannelChanger.ChannelChanger;
+import com.notdiamond.diamonds.functions.Render.HUD;
 import com.notdiamond.diamonds.core.KeyLoader;
 import com.notdiamond.diamonds.functions.Chat.ChatClass;
 import com.notdiamond.diamonds.functions.Macro.AutoPurchasePass;
@@ -35,31 +37,13 @@ import com.notdiamond.diamonds.commands.menu;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.util.EntityUtils;
 
-import javax.net.ssl.*;
-
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.Timer;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.TimerTask;
 
 
 @Mod(
@@ -110,6 +94,8 @@ public class DiamondS extends Component {
             MinecraftForge.EVENT_BUS.register(new HideFallingBlock());
             MinecraftForge.EVENT_BUS.register(new AutoPurchasePass());
             MinecraftForge.EVENT_BUS.register(new HarpBot());
+            MinecraftForge.EVENT_BUS.register(new SmoothRotation());
+            MinecraftForge.EVENT_BUS.register(new ChannelChanger());
 
             Functions.RegisterFunctionType("Chat");
             Functions.RegisterFunctionType("Dungeon");
@@ -119,6 +105,7 @@ public class DiamondS extends Component {
             Functions.RegisterFunctionType("Render");
             Functions.RegisterFunctionType("Other");
 
+            Functions.RegisterFunction("ChannelChanger","Chat",true);
             Functions.RegisterFunction("PartyHelper","Chat",true);
             Functions.RegisterFunction("ADClear","Chat",true);
             Functions.RegisterFunction("CarryHelper","Chat",false);

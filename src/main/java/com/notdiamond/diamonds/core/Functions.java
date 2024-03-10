@@ -68,12 +68,15 @@ public class Functions extends Component {
             WormCleaner.tick = 0;
             WormCleaner.CurrectTime = 0;
             WormCleaner.DuringClearer = false;
+            WormCleaner.TimeRecordTick = 0;
+            WormCleaner.TimeRecordTime = 0;
         }
         if(theFunction.contentEquals("autofish")){
             Minecraft.getMinecraft().gameSettings.setSoundLevel(SoundCategory.PLAYERS, 1);
             AutoFish.Stage =0;
             AutoFish.Tick = 0;
             AutoFish.HookThrown = false;
+            AutoFish.Status = false;
             AutoFish.switched();
         }
         if(theFunction.contentEquals("adclear") && Functions.GetStatus("Debug.MsgCopy")){

@@ -10,6 +10,7 @@ import com.notdiamond.diamonds.functions.Macro.WormCleaner;
 import com.notdiamond.diamonds.functions.Player.AngleLock;
 import com.notdiamond.diamonds.functions.Chat.ChatClass;
 import com.notdiamond.diamonds.functions.Player.WardrobeHelper;
+import com.notdiamond.diamonds.functions.Render.HUD;
 
 import java.io.File;
 import java.io.FileInputStream;

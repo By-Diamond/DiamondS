@@ -1,5 +1,8 @@
-package com.notdiamond.diamonds.core;
+package com.notdiamond.diamonds.functions.Render;
 import com.notdiamond.diamonds.commands.FunctionSettings;
+import com.notdiamond.diamonds.core.DiamondSFunctionType;
+import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.KeyLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

@@ -4,6 +4,7 @@ import com.notdiamond.diamonds.DiamondS;
 import com.notdiamond.diamonds.core.Config;
 import com.notdiamond.diamonds.core.Functions;
 import com.notdiamond.diamonds.utils.DText;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.projectile.EntityFishHook;
@@ -30,21 +31,22 @@ public class AutoFish {
     public static int PickDelay = 50;
     public static int MaxTime = 20;
     public static int MaxWaitTime = 3;
-    public static String RodName = "rod";
-    public boolean AutoSwap = false;
+//    public static String RodName = "rod";
+//    public boolean AutoSwap = false;
     public static int[] TextPosition = new int[2];
     public static int AntiMacroTime = 12000;
     public static boolean AutoMove = true;
     public static boolean AlwaysSneak = false;
     public static boolean AlwaysW = false;
-    public static int AutoMoveDU = 200;
-    public static boolean AutoMoveLROnly = false;
+//    public static int AutoMoveDU = 200;
+//    public static boolean AutoMoveLROnly = false;
 
     public static int Stage;
     public static int Tick;
     public static boolean HookThrown = false;
     static String Text;
     public static Timer antimacro = new Timer();
+    public static boolean Status = false;
 
     public static void LoadConfig() {
         TextPosition[0] = Integer.parseInt(Config.prop.getProperty("AutoFish.TextX", "100"));
@@ -56,9 +58,9 @@ public class AutoFish {
         AutoMove = Boolean.parseBoolean(Config.prop.getProperty("AutoFish.AutoMove", "true"));
         AlwaysSneak = Boolean.parseBoolean(Config.prop.getProperty("AutoFish.AlwaysSneak", "false"));
         AlwaysW = Boolean.parseBoolean(Config.prop.getProperty("AutoFish.AlwaysW", "false"));
-        AutoMoveLROnly = Boolean.parseBoolean(Config.prop.getProperty("AutoFish.AMLROnly", "false"));
+//        AutoMoveLROnly = Boolean.parseBoolean(Config.prop.getProperty("AutoFish.AMLROnly", "false"));
         AntiMacroTime = Integer.parseInt(Config.prop.getProperty("AutoFish.AntiMacroTime", "12000"));
-        AutoMoveDU = Integer.parseInt(Config.prop.getProperty("AutoFish.AutoMoveDuration", "200"));
+//        AutoMoveDU = Integer.parseInt(Config.prop.getProperty("AutoFish.AutoMoveDuration", "200"));
     }
 
     public static void SaveConfig() throws IOException {
@@ -66,15 +68,14 @@ public class AutoFish {
         Config.prop.setProperty("AutoFish.TextY", String.valueOf(TextPosition[1]));
         Config.prop.setProperty("AutoFish.RethrowDelay", String.valueOf(RethrowDelay));
         Config.prop.setProperty("AutoFish.PickDelay", String.valueOf(PickDelay));
-         Config.prop.setProperty("AutoFish.MaxTime", String.valueOf(MaxTime));
-         Config.prop.setProperty("AutoFish.MaxWaitTime", String.valueOf(MaxWaitTime));
+        Config.prop.setProperty("AutoFish.MaxTime", String.valueOf(MaxTime));
+        Config.prop.setProperty("AutoFish.MaxWaitTime", String.valueOf(MaxWaitTime));
         Config.prop.setProperty("AutoFish.AlwaysSneak", String.valueOf(AlwaysSneak));
         Config.prop.setProperty("AutoFish.AlwaysW", String.valueOf(AlwaysW));
-        Config.prop.setProperty("AutoFish.AMLROnly", String.valueOf(AutoMoveLROnly));
+//        Config.prop.setProperty("AutoFish.AMLROnly", String.valueOf(AutoMoveLROnly));
         Config.prop.setProperty("AutoFish.AutoMove", String.valueOf(AutoMove));
-        Config.prop.setProperty("AutoFish.AutoMoveDU", String.valueOf(AutoMove));
         Config.prop.setProperty("AutoFish.AntiMacroTime", String.valueOf(AntiMacroTime));
-        Config.prop.setProperty("AutoFish.AutoMoveDuration", String.valueOf(AutoMoveDU));
+//        Config.prop.setProperty("AutoFish.AutoMoveDuration", String.valueOf(AutoMoveDU));
         FileOutputStream fos = new FileOutputStream(Config.fileName);
         Config.prop.store(fos, null);
     }
@@ -97,117 +98,143 @@ public class AutoFish {
                         if(!(mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() == Items.fishing_rod)){
                             return;
                         }
-                        int type = 1;
-                        if(!AlwaysW && !AutoMoveLROnly){
-                            type = DText.randomnumber(1, 4);
+//                        int type = 1;
+//                        if(!AlwaysW && !AutoMoveLROnly){
+//                            type = DText.randomnumber(1, 4);
+//                        }else{
+//                            type = DText.randomnumber(1, 2);
+//                        }
+//                        int A = DText.randomnumber(AutoMoveDU, AutoMoveDU+50);
+//                        int B = DText.randomnumber(1, 3);
+//                        int C = DText.randomnumber(1500, 3000);
+//                        switch (type){
+//                            case 1:
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                Thread.sleep(DText.randomnumber(100, 300));
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), true);
+//                                Thread.sleep(A);
+//                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw + B/2);
+//                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch + B/2);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), false);
+//                                if(!AutoMove || !Functions.GetStatus("AutoFish")){
+//                                    antimacro.cancel();
+//                                    antimacro = new Timer();
+//                                    return;
+//                                }
+//                                Thread.sleep(C);
+//                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw- B/2);
+//                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch - B/2);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), true);
+//                                Thread.sleep(A);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), false);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), false);
+//                                break;
+//                            case 2:
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                Thread.sleep(DText.randomnumber(100, 300));
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), true);
+//                                Thread.sleep(A);
+//                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw + B/2);
+//                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch + B/2);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), false);
+//                                if(!AutoMove || !Functions.GetStatus("AutoFish")){
+//                                    antimacro.cancel();
+//                                    antimacro = new Timer();
+//                                    return;
+//                                }
+//                                Thread.sleep(C);
+//                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw- B/2);
+//                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch - B/2);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), true);
+//                                Thread.sleep(A);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), false);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), false);
+//                                break;
+//                            case 3:
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                Thread.sleep(DText.randomnumber(100, 300));
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.getKeyCode(), true);
+//                                Thread.sleep(A);
+//                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw - B/2);
+//                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch - B/2);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), false);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.getKeyCode(), false);
+//                                if(!AutoMove || !Functions.GetStatus("AutoFish")){
+//                                    antimacro.cancel();
+//                                    antimacro = new Timer();
+//                                    return;
+//                                }
+//                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw+ B/2);
+//                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch + B/2);
+//                                Thread.sleep(C);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), true);
+//                                Thread.sleep(A);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), false);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), false);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), false);
+//                                break;
+//                            case 4:
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                Thread.sleep(DText.randomnumber(100, 300));
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), true);
+//                                Thread.sleep(A);
+//                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw - B/2);
+//                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch - B/2);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), false);
+//                                if(!AutoMove || !Functions.GetStatus("AutoFish")){
+//                                    antimacro.cancel();
+//                                    antimacro = new Timer();
+//                                    return;
+//                                }
+//                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw+ B/2);
+//                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch + B/2);
+//                                Thread.sleep(C);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.getKeyCode(), true);
+//                                Thread.sleep(A);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), false);
+//                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.getKeyCode(), false);
+//                                break;
+//                        }
+                        if(Status){
+                            mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw + 0.3);
+                            mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch + 0.3);
+                            Thread.sleep(500);
+                            KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), true);
+                            Thread.sleep(400);
+                            KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindRight.getKeyCode(), true);
+                            Thread.sleep(80);
+                            KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindRight.getKeyCode(), false);
+                            Thread.sleep(300);
+                            KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), false);
                         }else{
-                            type = DText.randomnumber(1, 2);
+                            mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw - 0.3);
+                            mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch - 0.3);
+                            Thread.sleep(500);
+                            KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), true);
+                            Thread.sleep(400);
+                            KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindLeft.getKeyCode(), true);
+                            Thread.sleep(80);
+                            KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindLeft.getKeyCode(), false);
+                            Thread.sleep(300);
+                            KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), false);
+
                         }
-                        int A = DText.randomnumber(AutoMoveDU, AutoMoveDU+50);
-                        int B = DText.randomnumber(1, 3);
-                        int C = DText.randomnumber(1500, 3000);
-                        switch (type){
-                            case 1:
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                Thread.sleep(DText.randomnumber(100, 300));
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), true);
-                                Thread.sleep(A);
-                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw + B/2);
-                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch + B/2);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), false);
-                                if(!AutoMove || !Functions.GetStatus("AutoFish")){
-                                    antimacro.cancel();
-                                    antimacro = new Timer();
-                                    return;
-                                }
-                                Thread.sleep(C);
-                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw- B/2);
-                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch - B/2);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), true);
-                                Thread.sleep(A);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), false);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), false);
-                                break;
-                            case 2:
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                Thread.sleep(DText.randomnumber(100, 300));
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), true);
-                                Thread.sleep(A);
-                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw + B/2);
-                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch + B/2);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), false);
-                                if(!AutoMove || !Functions.GetStatus("AutoFish")){
-                                    antimacro.cancel();
-                                    antimacro = new Timer();
-                                    return;
-                                }
-                                Thread.sleep(C);
-                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw- B/2);
-                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch - B/2);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), true);
-                                Thread.sleep(A);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), false);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), false);
-                                break;
-                            case 3:
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                Thread.sleep(DText.randomnumber(100, 300));
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.getKeyCode(), true);
-                                Thread.sleep(A);
-                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw - B/2);
-                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch - B/2);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(), false);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.getKeyCode(), false);
-                                if(!AutoMove || !Functions.GetStatus("AutoFish")){
-                                    antimacro.cancel();
-                                    antimacro = new Timer();
-                                    return;
-                                }
-                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw+ B/2);
-                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch + B/2);
-                                Thread.sleep(C);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), true);
-                                Thread.sleep(A);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), false);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), false);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), false);
-                                break;
-                            case 4:
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                Thread.sleep(DText.randomnumber(100, 300));
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), true);
-                                Thread.sleep(A);
-                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw - B/2);
-                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch - B/2);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), false);
-                                if(!AutoMove || !Functions.GetStatus("AutoFish")){
-                                    antimacro.cancel();
-                                    antimacro = new Timer();
-                                    return;
-                                }
-                                mc.thePlayer.rotationYaw = (float) (mc.thePlayer.rotationYaw+ B/2);
-                                mc.thePlayer.rotationPitch = (float) (mc.thePlayer.rotationPitch + B/2);
-                                Thread.sleep(C);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), true);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.getKeyCode(), true);
-                                Thread.sleep(A);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), false);
-                                KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.getKeyCode(), false);
-                                break;
-                        }
+                        Status = !Status;
+
 
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
@@ -355,7 +382,6 @@ public class AutoFish {
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent e) {
         if (Functions.GetStatus("AutoFish") && e.type == RenderGameOverlayEvent.ElementType.TEXT) {
-            ScaledResolution scaled = new ScaledResolution(mc);
             mc.fontRendererObj.drawStringWithShadow("§b「 §lDiamondS §r§bAutoFish 」", TextPosition[0], TextPosition[1], 0xFFFFFF);
             mc.fontRendererObj.drawStringWithShadow(Text, TextPosition[0], TextPosition[1]+10, 0xFFFFFF);
         }

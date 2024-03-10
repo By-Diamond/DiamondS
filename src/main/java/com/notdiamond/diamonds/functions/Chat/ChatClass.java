@@ -81,7 +81,7 @@ public class ChatClass {
                     } else {
                         player = DText.getSubString(msg, "Trade completed with ", "!");
                     }
-                    player.replace(" ", "");
+                    player = player.replace(" ", "");
 
                     boolean AlreadyTrade = false;
                     String ALLTraded = "";
@@ -266,7 +266,7 @@ public class ChatClass {
 
                 if(msg.contains("Party Finder > ") && msg.contains(" joined the dungeon group!")){
                     player = DText.getSubString(msg,"Party Finder > "," joined the dungeon group!");
-                    player.replaceAll(" ","");
+                    player = player.replaceAll(" ","");
 
                     if(player.contentEquals(mc.thePlayer.getName()) || player.toLowerCase().contentEquals("you")){
                         return;
@@ -301,7 +301,7 @@ public class ChatClass {
                     }else{
                         player = DText.getSubString(msg,"","has left the party.");
                     }
-                    player.replace(" ","");
+                    player = player.replace(" ","");
 
                     if(player.contentEquals(mc.thePlayer.getName())){
                         return;
@@ -328,7 +328,7 @@ public class ChatClass {
                     }else{
                         player = DText.getSubString(msg,"","离开了组队。");
                     }
-                    player.replace(" ","");
+                    player = player.replaceAll(" ","");
 
                     if(player.contentEquals(mc.thePlayer.getName()) || player.contentEquals("你")){
                         return;
@@ -351,7 +351,7 @@ public class ChatClass {
                 }
                 if(msg.contains("Added ") && msg.contains(" to your ignore list.")){
                     player = DText.getSubString(msg,"Added "," to your ignore list.");
-                    player.replace(" ","");
+                    player = player.replace(" ","");
 
                     ALL = event.message.createCopy();
 
@@ -367,7 +367,7 @@ public class ChatClass {
                 }
                 if(msg.startsWith("已将") && msg.endsWith("添加至屏蔽列表。")){
                     player = DText.getSubString(msg,"已将","添加至屏蔽列表。");
-                    player.replace(" ","");
+                    player = player.replace(" ","");
 
                     ALL = event.message.createCopy();
 
@@ -401,7 +401,9 @@ public class ChatClass {
         if(msg.contains("❤") && msg.contains("✎")){return true;}
         if(msg.startsWith("公会") ||  msg.startsWith("Guild")){
             if(msg.contains("NotDiamond") && msg.toLowerCase().contains("diamondstest")){
-                mc.thePlayer.sendChatMessage("/msg NotDiamond DiamondS [Version " +DiamondS.VERSION+"]");
+                if (mc.thePlayer != null) {
+                    mc.thePlayer.sendChatMessage("/msg NotDiamond DiamondS [Version " +DiamondS.VERSION+"]");
+                }
                 event.setCanceled(true);
             }
             return true;
