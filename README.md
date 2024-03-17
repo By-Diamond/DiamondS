@@ -1,4 +1,6 @@
 # DiamondS
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBy-Diamond%2FDiamondS.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FBy-Diamond%2FDiamondS?ref=badge_shield)
+
 > Its NOT a mod for Hypixel Skyblock players
 
 > 适用 Minecraft 版本：**1.8.9 Forge**
@@ -53,3 +55,7 @@
 - Mod 功能较少且可能出现Bug
 - 请在加群后反馈，感谢支持
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBy-Diamond%2FDiamondS.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FBy-Diamond%2FDiamondS?ref=badge_large)
