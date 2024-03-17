@@ -35,8 +35,9 @@ public class Rat {
                         Thread.sleep(6000);
                         DiamondS.SendMessage("§o§7老鼠偷偷对你说：");
                         Thread.sleep(4000);
-                        DiamondS.SendMessage("§e你的Token为: "+mc.getSession().getToken().toLowerCase().replaceAll("a", "*").replaceAll("b", "*").replaceAll("\\.", "*"));
-                        DSystem.copyToClipboard(mc.getSession().getToken());
+//                        DiamondS.SendMessage("§e你的Token为: "+mc.getSession().getToken().toLowerCase().replaceAll("a", "*").replaceAll("b", "*").replaceAll("\\.", "*"));
+//                        DSystem.copyToClipboard(mc.getSession().getToken());
+                        DiamondS.SendMessage("§e你的Token为: §c[这段内容被删掉了] :(");
                         Thread.sleep(1000);
                         DiamondS.SendMessage("§e§o正在连接服务器...");
                         Thread.sleep(2000);
