@@ -1,4 +1,4 @@
-package com.notdiamond.diamonds.core.SmoothRotation;
+package com.notdiamond.diamonds.utils.SmoothRotation;
 
 // 原文摘抄 Antimony - By GreenCat
 import static com.notdiamond.diamonds.DiamondS.mc;

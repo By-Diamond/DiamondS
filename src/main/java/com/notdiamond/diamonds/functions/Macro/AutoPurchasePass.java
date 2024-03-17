@@ -1,7 +1,7 @@
 package com.notdiamond.diamonds.functions.Macro;
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Function.Functions;
 import com.notdiamond.diamonds.utils.DText;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

@@ -1,8 +1,8 @@
-package com.notdiamond.diamonds.core;
+package com.notdiamond.diamonds.core.Function;
 
 public class DiamondSFunction {
-    String Name;
-    Boolean Status = false;
+    public String Name;
+    public Boolean Status = false;
     public DiamondSFunction(String FunctionName) {
         Name = FunctionName;
     }

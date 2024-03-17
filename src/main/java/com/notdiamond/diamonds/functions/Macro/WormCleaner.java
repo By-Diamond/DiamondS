@@ -1,8 +1,8 @@
 package com.notdiamond.diamonds.functions.Macro;
 
-import com.notdiamond.diamonds.core.Config;
-import com.notdiamond.diamonds.core.Functions;
-import com.notdiamond.diamonds.core.SmoothRotation.SmoothRotation;
+import com.notdiamond.diamonds.core.Config.Config;
+import com.notdiamond.diamonds.core.Function.Functions;
+import com.notdiamond.diamonds.utils.SmoothRotation.SmoothRotation;
 import com.notdiamond.diamonds.functions.Chat.ChatClass;
 import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.entity.monster.EntitySilverfish;

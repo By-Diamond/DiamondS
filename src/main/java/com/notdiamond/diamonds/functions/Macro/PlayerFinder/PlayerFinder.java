@@ -1,8 +1,10 @@
 package com.notdiamond.diamonds.functions.Macro.PlayerFinder;
 
-import com.notdiamond.diamonds.core.Config;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.DiamondS;
+import com.notdiamond.diamonds.core.Config.Config;
+import com.notdiamond.diamonds.core.Function.Functions;
 import com.notdiamond.diamonds.utils.DMisc;
+import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -39,7 +41,7 @@ public class PlayerFinder {
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
-        if(Functions.GetStatus("PlayerFinder")){
+        if(Functions.GetStatus("PlayerFinder") || Functions.GetStatus("Debug.Health")){
             if(mc.theWorld != null && mc.thePlayer != null){
                 double x = mc.thePlayer.posX;
                 double y = mc.thePlayer.posY;
@@ -50,6 +52,9 @@ public class PlayerFinder {
                     for(EntityPlayer A:entityList){
                         if(!DMisc.CheckNPC(A) && DMisc.isValid(A)){
                             arrayList.add(new DPlayer(A.getName(),A.getDistanceToEntity(mc.thePlayer),A.posX,A.posY,A.posZ));
+                            if(DText.GetLengthAfterDot(String.valueOf(A.getHealth())) > 1 && Functions.GetStatus("Debug.Health")){
+                                DiamondS.SendMessage("§a名称" + A.getName() + " || §b生命值" + A.getHealth() + " || §e小数位数" + DText.GetLengthAfterDot(String.valueOf(A.getHealth())));
+                            }
                         }
                     }
                     if(!arrayList.isEmpty()){
@@ -63,7 +68,7 @@ public class PlayerFinder {
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent e) {
         if (e.type == RenderGameOverlayEvent.ElementType.TEXT){
-            ScaledResolution scaled = new ScaledResolution(mc);
+            //ScaledResolution scaled = new ScaledResolution(mc);
             int playerin20 = 0;
             int playerin50 = 0;
             int playerin100 = 0;

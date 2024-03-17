@@ -1,6 +1,6 @@
 package com.notdiamond.diamonds.functions.Render;
 
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Function.Functions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;

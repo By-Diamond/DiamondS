@@ -1,7 +1,7 @@
 package com.notdiamond.diamonds.functions.Player;
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Function.Functions;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
@@ -17,7 +17,7 @@ public class WardrobeHelper {
     public static int Delay = 500;
 
     @SubscribeEvent
-    public void WardrobeHelper(final GuiOpenEvent event) throws InterruptedException {
+    public void WardrobeHelper(final GuiOpenEvent event){
         if (event.gui instanceof GuiChest) {
             if (DiamondS.IsOnSkyBlock() && event.gui instanceof GuiChest && Functions.GetStatus("WardRobeHelper") && DiamondS.tempint > 0) {
                 Container container = ((GuiChest) event.gui).inventorySlots;

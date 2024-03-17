@@ -13,6 +13,9 @@ public class DMisc {
         if (!(entity instanceof EntityOtherPlayerMP)) {
             return false;
         } else {
+            if(DText.GetLengthAfterDot(String.valueOf(((EntityOtherPlayerMP) entity).getHealth())) >= 6){
+                return true;
+            }
             EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
             return entity.getUniqueID().version() == 2 && entityLivingBase.getHealth() == 20.0F;
         }

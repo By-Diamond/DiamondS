@@ -1,6 +1,8 @@
-package com.notdiamond.diamonds.core;
+package com.notdiamond.diamonds.core.Config;
 
 
+import com.notdiamond.diamonds.core.Function.Functions;
+import com.notdiamond.diamonds.functions.Dungeon.CarryHelper;
 import com.notdiamond.diamonds.functions.Macro.HarpBot;
 import com.notdiamond.diamonds.functions.Render.AntiInvisible;
 import com.notdiamond.diamonds.functions.Dungeon.GhostBlock;
@@ -37,22 +39,19 @@ public class Config
             if(prop.isEmpty()){
                 saveConfig();
             }else{
-                for(int i = 0;i<=Functions.FunctionList.size()-1;i++){
+                for(int i = 0; i<= Functions.FunctionList.size()-1; i++){
                     String Name = Functions.FunctionList.get(i).Name;
                     if(Name.contentEquals("HarpBot") || Name.contentEquals("Rat") || Name.contentEquals("AutoFish") ||Name.contentEquals("HidePlayers") || Name.contentEquals("HideArmor") || Name.contentEquals("AngleLock")){
-                        Functions.SetStatus(Name,false);
+                        Functions.SetStatusWithout(Name,false);
                     }else{
                         String Status = Config.prop.getProperty("Functions."+Name);
                         if(Status != null && !(Status.contentEquals(""))){
-                            Functions.SetStatus(Name,Boolean.parseBoolean(Status));
+                            Functions.SetStatusWithout(Name,Boolean.parseBoolean(Status));
                         }
                     }
                 }
                 HUD.X = Integer.parseInt(Config.prop.getProperty("HUD.X", "5"));
                 HUD.Y = Integer.parseInt(Config.prop.getProperty("HUD.Y", "10"));
-                ChatClass.CarryHelper_IsAutoWarp = Boolean.parseBoolean(Config.prop.getProperty("CarryHelper.AutoWarp", "false"));
-                ChatClass.CarryHelper_IsAutoMessage = Boolean.parseBoolean(Config.prop.getProperty("CarryHelper.AutoMessage", "false"));
-                ChatClass.CarryHelper_AutoMessage = Config.prop.getProperty("CarryHelper.Msg", "Pay at sand");
                 ChatClass.NickName_Name = Config.prop.getProperty("NickName.Name", "§b[You]");
                 WardrobeHelper.Delay = Integer.parseInt(Config.prop.getProperty("WardrobeHelper.Delay", "500"));
                 AngleLock.Pitch = Integer.parseInt(Config.prop.getProperty("AngleLock.Pitch", "0"));
@@ -60,6 +59,7 @@ public class Config
                 AngleLock.AutoBreak = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.AutoBreak","false"));
                 AngleLock.LockPitch = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.LockPitch","true"));
                 AngleLock.LockYaw = Boolean.parseBoolean(Config.prop.getProperty("AngleLock.LockYaw","true"));
+                CarryHelper.LoadConfig();
                 WormCleaner.LoadConfig();
                 PlayerFinder.LoadConfig();
                 GhostBlock.LoadConfig();
@@ -76,9 +76,6 @@ public class Config
                 }
                 Config.prop.setProperty("HUD.X", String.valueOf(HUD.X));
                 Config.prop.setProperty("HUD.Y", String.valueOf(HUD.Y));
-                Config.prop.setProperty("CarryHelper.AutoWarp", String.valueOf(ChatClass.CarryHelper_IsAutoWarp));
-                Config.prop.setProperty("CarryHelper.AutoMessage", String.valueOf(ChatClass.CarryHelper_IsAutoMessage));
-                Config.prop.setProperty("CarryHelper.Msg", ChatClass.CarryHelper_AutoMessage);
                 Config.prop.setProperty("NickName.Name", ChatClass.NickName_Name);
                 Config.prop.setProperty("WardrobeHelper.Delay", String.valueOf(WardrobeHelper.Delay));
                 Config.prop.setProperty("AngleLock.Pitch", String.valueOf(AngleLock.Pitch));
@@ -86,6 +83,7 @@ public class Config
                 Config.prop.setProperty("AngleLock.AutoBreak", String.valueOf(AngleLock.AutoBreak));
                 Config.prop.setProperty("AngleLock.LockYaw", String.valueOf(AngleLock.LockYaw));
                 Config.prop.setProperty("AngleLock.LockPitch", String.valueOf(AngleLock.LockPitch));
+                CarryHelper.SaveConfig();
                 WormCleaner.SaveConfig();
                 PlayerFinder.SaveConfig();
                 GhostBlock.SaveConfig();

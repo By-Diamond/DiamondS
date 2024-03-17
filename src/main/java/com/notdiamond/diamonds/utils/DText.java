@@ -1,5 +1,7 @@
 package com.notdiamond.diamonds.utils;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Random;
@@ -51,29 +53,29 @@ public class DText {
         return text;
     }
     public static String RemoveColor(String text) {
-        text = text.replaceAll("§1", "");
-        text = text.replaceAll("§2", "");
-        text = text.replaceAll("§3", "");
-        text = text.replaceAll("§4", "");
-        text = text.replaceAll("§5", "");
-        text = text.replaceAll("§6", "");
-        text = text.replaceAll("§7", "");
-        text = text.replaceAll("§8", "");
-        text = text.replaceAll("§9", "");
-        text = text.replaceAll("§0", "");
-        text = text.replaceAll("§a", "");
-        text = text.replaceAll("§b", "");
-        text = text.replaceAll("§c", "");
-        text = text.replaceAll("§d", "");
-        text = text.replaceAll("§e", "");
-        text = text.replaceAll("§f", "");
-        text = text.replaceAll("§r", "");
-        text = text.replaceAll("§n", "");
-        text = text.replaceAll("§m", "");
-        text = text.replaceAll("§o", "");
-        text = text.replaceAll("§r", "");
-        text = text.replaceAll("§k", "");
-        return text;
+//        text = text.replaceAll("§1", "");
+//        text = text.replaceAll("§2", "");
+//        text = text.replaceAll("§3", "");
+//        text = text.replaceAll("§4", "");
+//        text = text.replaceAll("§5", "");
+//        text = text.replaceAll("§6", "");
+//        text = text.replaceAll("§7", "");
+//        text = text.replaceAll("§8", "");
+//        text = text.replaceAll("§9", "");
+//        text = text.replaceAll("§0", "");
+//        text = text.replaceAll("§a", "");
+//        text = text.replaceAll("§b", "");
+//        text = text.replaceAll("§c", "");
+//        text = text.replaceAll("§d", "");
+//        text = text.replaceAll("§e", "");
+//        text = text.replaceAll("§f", "");
+//        text = text.replaceAll("§r", "");
+//        text = text.replaceAll("§n", "");
+//        text = text.replaceAll("§m", "");
+//        text = text.replaceAll("§o", "");
+//        text = text.replaceAll("§r", "");
+//        text = text.replaceAll("§k", "");
+        return ChatFormatting.stripFormatting(text);
     }
 
     /*
@@ -119,5 +121,15 @@ public class DText {
             return "0s";
         }
         return hs+ms+ss;
+    }
+
+    public static int GetLengthAfterDot(String Number) {
+        //我还是更喜欢中文:)
+        if (Number == null || !Number.contains(".")) {
+            return 0;
+        }
+        int decimalIndex = Number.indexOf('.');
+        int lengthAfterDecimal = Number.length() - decimalIndex - 1;
+        return lengthAfterDecimal;
     }
 }

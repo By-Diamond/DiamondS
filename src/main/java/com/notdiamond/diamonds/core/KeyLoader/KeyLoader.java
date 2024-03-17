@@ -1,4 +1,4 @@
-package com.notdiamond.diamonds.core;
+package com.notdiamond.diamonds.core.KeyLoader;
 
 
 import net.minecraft.client.settings.KeyBinding;

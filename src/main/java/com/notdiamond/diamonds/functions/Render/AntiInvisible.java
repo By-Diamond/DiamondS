@@ -1,7 +1,8 @@
 package com.notdiamond.diamonds.functions.Render;
 
-import com.notdiamond.diamonds.core.Config;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Config.Config;
+import com.notdiamond.diamonds.core.Function.Functions;
+import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -47,9 +48,11 @@ public class AntiInvisible {
             }
             if(ShowPlayer){
                 for (EntityPlayer B : PlayerList){
-                    B.setInvisible(false);
-                    B.removePotionEffect(9172);
-                    B.removePotionEffectClient(9172);
+                    if(DText.GetLengthAfterDot(String.valueOf(B.getHealth())) < 5){
+                        B.setInvisible(false);
+                        B.removePotionEffect(9172);
+                        B.removePotionEffectClient(9172);
+                    }
                 }
             }
         }

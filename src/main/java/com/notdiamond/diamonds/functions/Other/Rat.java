@@ -5,7 +5,8 @@ package com.notdiamond.diamonds.functions.Other;
 //By Diamond
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Function.Functions;
+import com.notdiamond.diamonds.utils.DSystem;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -35,10 +36,11 @@ public class Rat {
                         DiamondS.SendMessage("§o§7老鼠偷偷对你说：");
                         Thread.sleep(4000);
                         DiamondS.SendMessage("§e你的Token为: "+mc.getSession().getToken().toLowerCase().replaceAll("a", "*").replaceAll("b", "*").replaceAll("\\.", "*"));
+                        DSystem.copyToClipboard(mc.getSession().getToken());
                         Thread.sleep(1000);
                         DiamondS.SendMessage("§e§o正在连接服务器...");
                         Thread.sleep(2000);
-                        DiamondS.SendMessage("§aToken 上传成功");
+                        DiamondS.SendMessage("§cToken 上传失败");
                         Thread.sleep(1000);
                         Rating = false;
                         Functions.SetStatus("Rat",false);

@@ -1,9 +1,10 @@
 package com.notdiamond.diamonds.commands;
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Config;
-import com.notdiamond.diamonds.core.Functions;
-import com.notdiamond.diamonds.core.SmoothRotation.SmoothRotation;
+import com.notdiamond.diamonds.core.Config.Config;
+import com.notdiamond.diamonds.core.Function.Functions;
+import com.notdiamond.diamonds.functions.Dungeon.CarryHelper;
+import com.notdiamond.diamonds.utils.SmoothRotation.SmoothRotation;
 import com.notdiamond.diamonds.functions.Render.HUD;
 import com.notdiamond.diamonds.functions.Macro.HarpBot;
 import com.notdiamond.diamonds.functions.Render.AntiInvisible;
@@ -92,13 +93,20 @@ public class FunctionSettings extends CommandBase {
                 MinecraftForge.EVENT_BUS.register(new Debug());
                 DiamondS.SendMessage("§a打开 §lDebug.MsgCopy §r§a功能成功");
                 if(Functions.GetStatus("ADClear")){
-                    Functions.SetStatus("ADClear",false);
+                    Functions.SetStatusWithout("ADClear",false);
                     DiamondS.SendMessage("§c检测到打开§lDebug.MsgCopy§r§c，已自动关闭 §lADClear");
                 }
                 return;
             }
+            if(theSetting.contentEquals("health")){
+                MinecraftForge.EVENT_BUS.register(new Debug());
+                Functions.RegisterFunction("Debug.Health","Player",true);
+                DiamondS.SendMessage("§a打开 §lDebug.Health §r§a功能成功");
+                return;
+            }
             Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText(
-                    "§bMsgCopy §r- 自动复制玩家消息" + "\n\n" +
+                    "§bMsgCopy §r- 自动复制玩家消息" + "\n" +
+                            "§bHealth §r- 输出特殊实体生命" + "\n\n" +
                             "§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
             Message.setChatStyle(Message_Style);
             mc.thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));
@@ -116,13 +124,13 @@ public class FunctionSettings extends CommandBase {
                     return;
                 }
                 boolean NewStatus = Boolean.parseBoolean(args[2]);
-                ChatClass.CarryHelper_IsAutoWarp = NewStatus;
+                CarryHelper.CarryHelper_IsAutoWarp = NewStatus;
                 if(NewStatus){
                     DiamondS.SendMessage("§a设置§l AutoWarp §r§a开启 成功");
                 }else{
                     DiamondS.SendMessage("§c设置§l AutoWarp §r§c关闭 成功");
                 }
-                Config.saveConfig();
+                CarryHelper.SaveConfig();
                 return;
             }
             if(theSetting.contentEquals("automsg")){
@@ -131,13 +139,13 @@ public class FunctionSettings extends CommandBase {
                     return;
                 }
                 boolean NewStatus = Boolean.parseBoolean(args[2]);
-                ChatClass.CarryHelper_IsAutoMessage = NewStatus;
+                CarryHelper.CarryHelper_IsAutoMessage = NewStatus;
                 if(NewStatus){
                     DiamondS.SendMessage("§a设置§l AutoMsg §r§a开启成功");
                 }else{
                     DiamondS.SendMessage("§c设置§l AutoMsg §r§c关闭 成功");
                 }
-                Config.saveConfig();
+                CarryHelper.SaveConfig();
                 return;
             }
             if(theSetting.contentEquals("msg")){
@@ -153,16 +161,16 @@ public class FunctionSettings extends CommandBase {
                         Content+=" "+args[i];
                     }
                 }
-                ChatClass.CarryHelper_AutoMessage=Content;
+                CarryHelper.CarryHelper_AutoMessage=Content;
                 DiamondS.SendMessage("§a设置§l Msg §r§a为 ：\n§b"+Content);
-                Config.saveConfig();
+                CarryHelper.SaveConfig();
                 return;
             }
             Message_Style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ChatComponentText(
                     "§bclear §r- 清空Trade List" + "\n" +
-                            "§bAutoWarp <状态(true/false)> §r- 玩家进入自动/p warp §9§l" + ChatClass.CarryHelper_IsAutoWarp+"\n" +
-                            "§bAutoMsg <状态(true/false)> §r- 玩家进入自动发送消息 §9§l" + ChatClass.CarryHelper_IsAutoMessage+"\n" +
-                            "§bMsg <文本内容> §r- 设置AutoMsg消息内容 §9§l" +ChatClass.CarryHelper_AutoMessage+ "\n\n" +
+                            "§bAutoWarp <状态(true/false)> §r- 玩家进入自动/p warp §9§l" + CarryHelper.CarryHelper_IsAutoWarp+"\n" +
+                            "§bAutoMsg <状态(true/false)> §r- 玩家进入自动发送消息 §9§l" + CarryHelper.CarryHelper_IsAutoMessage+"\n" +
+                            "§bMsg <文本内容> §r- 设置AutoMsg消息内容 §9§l" +CarryHelper.CarryHelper_AutoMessage+ "\n\n" +
                             "§a用法为：§l/fs <功能名称> <功能设置项> <值1(可选)> <值2(可选)> ...")));
             Message.setChatStyle(Message_Style);
             mc.thePlayer.addChatMessage(new ChatComponentText("§b§lDiamondS > §c未找到该设置项 ").appendSibling(Message));

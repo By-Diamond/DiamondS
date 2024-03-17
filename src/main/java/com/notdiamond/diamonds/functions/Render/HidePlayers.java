@@ -1,6 +1,6 @@
 package com.notdiamond.diamonds.functions.Render;
 
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Function.Functions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -31,14 +31,14 @@ public class HidePlayers {
     public void AutoOFF(WorldEvent.Unload event) {
         if(Functions.GetStatus("HidePlayers")){
             HidePlayers.Reload = true;
-            Functions.SetStatus("HidePlayers",false);
+            Functions.SetStatusWithout("HidePlayers",false);
         }
     }
     @SubscribeEvent
     public void AutoON(RenderWorldLastEvent event) {
         if(!Functions.GetStatus("HidePlayers") && HidePlayers.Reload){
             HidePlayers.Reload = false;
-            Functions.SetStatus("HidePlayers",true);
+            Functions.SetStatusWithout("HidePlayers",true);
         }
     }
 }

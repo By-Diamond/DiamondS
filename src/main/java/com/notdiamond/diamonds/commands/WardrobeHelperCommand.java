@@ -1,7 +1,7 @@
 package com.notdiamond.diamonds.commands;
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Function.Functions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -11,7 +11,6 @@ import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.IChatComponent;
-import scala.collection.parallel.ParIterableLike;
 
 public class WardrobeHelperCommand extends CommandBase {
     @Override
@@ -31,7 +30,7 @@ public class WardrobeHelperCommand extends CommandBase {
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+    public void processCommand(ICommandSender sender, String[] args){
         if(Functions.GetStatus("WardrobeHelper")){
             if(args.length <= 0){
                 DiamondS.SendMessage("§c指令错误，正确的用法为：§l/wb <数量(1~18)>");

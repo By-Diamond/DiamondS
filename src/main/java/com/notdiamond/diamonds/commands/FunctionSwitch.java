@@ -1,7 +1,7 @@
 package com.notdiamond.diamonds.commands;
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Function.Functions;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 

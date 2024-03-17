@@ -4,12 +4,13 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import com.notdiamond.diamonds.commands.FunctionSettings;
 import com.notdiamond.diamonds.commands.FunctionSwitch;
 import com.notdiamond.diamonds.commands.WardrobeHelperCommand;
-import com.notdiamond.diamonds.core.Config;
-import com.notdiamond.diamonds.core.Functions;
-import com.notdiamond.diamonds.core.SmoothRotation.SmoothRotation;
+import com.notdiamond.diamonds.core.Config.Config;
+import com.notdiamond.diamonds.core.Function.Functions;
+import com.notdiamond.diamonds.functions.Dungeon.CarryHelper;
+import com.notdiamond.diamonds.utils.SmoothRotation.SmoothRotation;
 import com.notdiamond.diamonds.functions.Chat.ChannelChanger.ChannelChanger;
 import com.notdiamond.diamonds.functions.Render.HUD;
-import com.notdiamond.diamonds.core.KeyLoader;
+import com.notdiamond.diamonds.core.KeyLoader.KeyLoader;
 import com.notdiamond.diamonds.functions.Chat.ChatClass;
 import com.notdiamond.diamonds.functions.Macro.AutoPurchasePass;
 import com.notdiamond.diamonds.functions.Macro.HarpBot;
@@ -25,6 +26,7 @@ import com.notdiamond.diamonds.functions.Player.WardrobeHelper;
 import com.notdiamond.diamonds.functions.Render.HideArmor;
 import com.notdiamond.diamonds.functions.Render.HideFallingBlock;
 import com.notdiamond.diamonds.functions.Render.HidePlayers;
+import com.notdiamond.diamonds.utils.Timer.DTimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -48,16 +50,16 @@ import java.util.ArrayList;
 
 @Mod(
         modid = DiamondS.MODID,
-        version = DiamondS.VERSION,
         name = DiamondS.MODNAME,
-        acceptedMinecraftVersions = "[1.8.9]",
+        version = DiamondS.VERSION,
+        acceptedMinecraftVersions = "1.8.9",
         clientSideOnly = true
+
 )
 public class DiamondS extends Component {
     public static final String MODID = "diamonds";
-    public static final String VERSION = "1.6.0";
+    public static final String VERSION = "1.6.2";
     public static final String MODNAME = "DiamondS";
-    public static String PLAYERNAME = "";
     public static ArrayList<String> TradeList = new ArrayList();
     public static int tempint;
     public static Minecraft mc = null;
@@ -68,7 +70,7 @@ public class DiamondS extends Component {
             System.out.println("DiamondS >> Mod 已开始加载");
 
             mc = Minecraft.getMinecraft();
-
+            DTimer.RegisterTimer();
             new KeyLoader();
             ClientRegistry.registerKeyBinding(KeyLoader.HUDUP);
             ClientRegistry.registerKeyBinding(KeyLoader.HUDDown);
@@ -96,6 +98,7 @@ public class DiamondS extends Component {
             MinecraftForge.EVENT_BUS.register(new HarpBot());
             MinecraftForge.EVENT_BUS.register(new SmoothRotation());
             MinecraftForge.EVENT_BUS.register(new ChannelChanger());
+            MinecraftForge.EVENT_BUS.register(new CarryHelper());
 
             Functions.RegisterFunctionType("Chat");
             Functions.RegisterFunctionType("Dungeon");
@@ -108,9 +111,9 @@ public class DiamondS extends Component {
             Functions.RegisterFunction("ChannelChanger","Chat",true);
             Functions.RegisterFunction("PartyHelper","Chat",true);
             Functions.RegisterFunction("ADClear","Chat",true);
-            Functions.RegisterFunction("CarryHelper","Chat",false);
             Functions.RegisterFunction("IgnoreShow","Chat",true);
 
+            Functions.RegisterFunction("CarryHelper","Dungeon",false);
             Functions.RegisterFunction("GhostBlock","Dungeon",false);
 
             Functions.RegisterFunction("AutoFish","Macro",false);

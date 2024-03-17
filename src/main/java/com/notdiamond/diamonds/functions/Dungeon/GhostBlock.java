@@ -1,9 +1,9 @@
 package com.notdiamond.diamonds.functions.Dungeon;
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Config;
-import com.notdiamond.diamonds.core.Functions;
-import com.notdiamond.diamonds.core.KeyLoader;
+import com.notdiamond.diamonds.core.Config.Config;
+import com.notdiamond.diamonds.core.Function.Functions;
+import com.notdiamond.diamonds.core.KeyLoader.KeyLoader;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;

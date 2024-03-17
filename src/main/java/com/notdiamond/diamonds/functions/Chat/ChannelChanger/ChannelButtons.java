@@ -9,6 +9,10 @@ public class ChannelButtons extends GuiChat {
     @Override
     public void initGui() {
         super.initGui();
+        if(ChannelChanger.Commanding){
+            ChannelChanger.Commanding = false;
+            super.inputField.setText("/");
+        }
         ScaledResolution scaled = new ScaledResolution(mc);
         buttonList.add(new GuiButton(0, 335, scaled.getScaledHeight() - 35 -100, 20, 20, "A"));
         buttonList.add(new GuiButton(1, 335, scaled.getScaledHeight() - 35 -75, 20, 20, "P"));
@@ -36,7 +40,6 @@ public class ChannelButtons extends GuiChat {
         super.drawScreen(mouseX, mouseY, partialTicks);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 0.0F); // 设置颜色为完全透明
         drawRect(0, 0, this.width, this.height, 0); // 绘制一个覆盖整个聊天栏的矩形
-
     }
     @Override
     public void onGuiClosed(){

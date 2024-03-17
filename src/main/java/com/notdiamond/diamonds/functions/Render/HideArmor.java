@@ -1,7 +1,7 @@
 package com.notdiamond.diamonds.functions.Render;
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Function.Functions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -29,7 +29,7 @@ public class HideArmor {
     @SubscribeEvent
     public void AutoOFF(WorldEvent.Unload event) {
         if(Functions.GetStatus("HideArmor")){
-            Functions.SetStatus("HideArmor",false);
+            Functions.SetStatusWithout("HideArmor",false);
             DiamondS.SendMessage("§c检测到更换世界，已自动关闭 §lHideArmor");
 //            HideArmor.Reload = true;
         }

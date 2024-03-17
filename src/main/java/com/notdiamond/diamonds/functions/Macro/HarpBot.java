@@ -1,8 +1,8 @@
 package com.notdiamond.diamonds.functions.Macro;
 
 
-import com.notdiamond.diamonds.core.Config;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Config.Config;
+import com.notdiamond.diamonds.core.Function.Functions;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
@@ -20,7 +20,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.notdiamond.diamonds.DiamondS.mc;
-import static net.minecraft.client.Minecraft.getMinecraft;
 
 public class HarpBot {
     public static boolean InHarp = false;

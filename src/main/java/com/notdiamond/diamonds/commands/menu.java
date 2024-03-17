@@ -2,7 +2,7 @@ package com.notdiamond.diamonds.commands;
 
 import com.google.common.collect.Lists;
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Function.Functions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -43,7 +43,7 @@ public class menu extends CommandBase {
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+    public void processCommand(ICommandSender sender, String[] args){
         //sender instanceof EntityPlayer
         //DiamondS.SendMessage(Arrays.toString(args));
         IChatComponent ALL = null;

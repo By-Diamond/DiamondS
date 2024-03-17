@@ -1,11 +1,10 @@
 package com.notdiamond.diamonds.functions.Macro;
 
 import com.notdiamond.diamonds.DiamondS;
-import com.notdiamond.diamonds.core.Config;
-import com.notdiamond.diamonds.core.Functions;
+import com.notdiamond.diamonds.core.Config.Config;
+import com.notdiamond.diamonds.core.Function.Functions;
 import com.notdiamond.diamonds.utils.DText;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Items;

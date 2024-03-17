@@ -1,6 +1,7 @@
-package com.notdiamond.diamonds.core;
+package com.notdiamond.diamonds.core.Function;
 
 import com.notdiamond.diamonds.DiamondS;
+import com.notdiamond.diamonds.core.Config.Config;
 import com.notdiamond.diamonds.functions.Macro.AutoFish;
 import com.notdiamond.diamonds.functions.Macro.AutoPurchasePass;
 import com.notdiamond.diamonds.functions.Macro.HarpBot;
@@ -47,20 +48,20 @@ public class Functions extends Component {
 
         //附加↓
         if(theFunction.contentEquals("hidearmor") && Functions.GetStatus("HidePlayers")){
-            Functions.SetStatus("hideplayers",false);
+            Functions.SetStatusWithout("hideplayers",false);
             HidePlayers.Reload = false;
             DiamondS.SendMessage("§c检测到打开§lHideArmor§r§c，已自动关闭 §lHidePlayers");
         }
         if(theFunction.contentEquals("hideplayers") && Functions.GetStatus("HideArmor")){
-            Functions.SetStatus("hidearmor",false);
+            Functions.SetStatusWithout("hidearmor",false);
             DiamondS.SendMessage("§c检测到打开§lHideArmor§r§c，已自动关闭 §lHidePlayers");
         }
         if(theFunction.contentEquals("antiinvisible") && Functions.GetStatus("hideplayers")){
-            Functions.SetStatus("hideplayers",false);
+            Functions.SetStatusWithout("hideplayers",false);
             DiamondS.SendMessage("§c检测到打开§lAntiInvisible§r§c，已自动关闭 §lHidePlayers");
         }
         if(theFunction.contentEquals("hideplayers") && Functions.GetStatus("antiinvisible")){
-            Functions.SetStatus("antiinvisible",false);
+            Functions.SetStatusWithout("antiinvisible",false);
             DiamondS.SendMessage("§c检测到打开§lHidePlayers§r§c，已自动关闭 §lAntiInvisible");
         }
         if(theFunction.contentEquals("carryhelper")){DiamondS.TradeList.clear();}
@@ -80,7 +81,7 @@ public class Functions extends Component {
             AutoFish.switched();
         }
         if(theFunction.contentEquals("adclear") && Functions.GetStatus("Debug.MsgCopy")){
-            Functions.SetStatus("ADClear",false);
+            Functions.SetStatusWithout("ADClear",false);
             DiamondS.SendMessage("§c检测到打开§lDebug.MsgCopy§r§c，已自动关闭 §lADClear");
         }
         if(theFunction.contentEquals("sneak")){
@@ -125,16 +126,21 @@ public class Functions extends Component {
         for(int i = 0;i<=Functions.FunctionList.size()-1;i++){
             if(Functions.FunctionList.get(i).Name.toLowerCase().contentEquals(FunctionName.toLowerCase())){
                 Functions.FunctionList.get(i).SetStatus(NewStatus);
-                if(Minecraft.getMinecraft().thePlayer != null){
-                    if(FunctionName.toLowerCase().contentEquals("hideplayers") && HidePlayers.Reload){
-                        return true;
-                    }
                     if(NewStatus){
                         DiamondS.SendMessage("§a§l" + Functions.FunctionList.get(i).Name + " §r§a已开启");
                     }else{
                         DiamondS.SendMessage("§c§l" + Functions.FunctionList.get(i).Name + " §r§c已关闭");
                     }
-                }
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean SetStatusWithout(String FunctionName,boolean NewStatus){
+
+        for(int i = 0;i<=Functions.FunctionList.size()-1;i++){
+            if(Functions.FunctionList.get(i).Name.toLowerCase().contentEquals(FunctionName.toLowerCase())){
+                Functions.FunctionList.get(i).SetStatus(NewStatus);
                 return true;
             }
         }
