@@ -31,6 +31,12 @@
 - **AutoPurchasePass**  自动购买Crystal Hollows通行证
 - **HarpBot** 自动演奏
 - **ChannelChanger** 在聊天栏添加按钮快速切换频道
+- **ChestESP** 给 箱子 添加可透视边框
+- **GemstoneESP** 给各类 宝石(Gemstone) 添加可透视边框
+- **LavaESP** 给 岩浆 添加可透视边框(用于 Worm Fishing)
+- **PlayerESP** 给 玩家 添加可透视边框
+- **ChatFormat** 聊天栏消息添加当前时间和复制按钮
+- **SoundHider** 隐藏特定音效
 
 # 指令
 - **/menu** 打开菜单
@@ -54,5 +60,5 @@
 - Mod 功能较少且可能出现Bug
 - 请在加群后反馈，感谢支持
 
-## License
+## 许可证 License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBy-Diamond%2FDiamondS.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FBy-Diamond%2FDiamondS?ref=badge_large)
